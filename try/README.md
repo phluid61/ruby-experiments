@@ -1,7 +1,7 @@
 Try
 ===
 
-MOO Code[1] had the following language structure:
+MOO Code[1] had the following language construct:
 
 ```
 `unsafe_expression ! ANY'
