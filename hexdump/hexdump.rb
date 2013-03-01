@@ -51,7 +51,7 @@ class String
 	#
 	def wrap_printable ansi=false
 		ary=[]
-		if ansi && (ansi != :mono)
+		if ansi
 			g = false
 			i = 0
 			str=''
