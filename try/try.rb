@@ -17,11 +17,11 @@ end
 # parameters.
 #
 # Additionally, specific exception types can default to a fallback
-# value if passed as +Type => value+ pairs.
+# value if passed as (({Type => value})) pairs.
 #
 # Any un-trapped exception is raised normally.
 #
-# @param errs a list of exception types to safely trap.
+# @param errs a list of exception types to trap.
 #
 def trap *errs
 	hash = {}
