@@ -83,8 +83,9 @@ trap(StandardError) do
 end
 ```
 
-To replace a ZeroDivisonError with Infinity, but catch any other StandardError
-(of which ZeroDivisionError is a subclass) and return it in-place.
+...to replace a ZeroDivisonError with Infinity, but catch any other
+StandardError (of which ZeroDivisionError is a subclass) and return it
+in-place.
 
 ### Early Evaluation
 
