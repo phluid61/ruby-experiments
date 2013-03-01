@@ -23,7 +23,7 @@ end
 #
 # @param errs a list of exception types to safely trap.
 #
-def try_rescue *errs
+def trap *errs
 	hash = {}
 	hash = errs.pop if errs.last.is_a? Hash
 	errs.each {|ec| hash[ec] = ec }

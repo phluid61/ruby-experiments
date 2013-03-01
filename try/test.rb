@@ -17,24 +17,24 @@ class TestTry < Test::Unit::TestCase
 		assert_equal(1, try(&$benign))
 		assert_instance_of(RuntimeError, try(&$runtime))
 	end
-	def test_on
+	def test_trap
 		# Single exception class
-		assert_equal(1, try_rescue(RuntimeError,&$benign) )
-		assert_instance_of(RuntimeError, try_rescue(RuntimeError,&$runtime))
+		assert_equal(1, trap(RuntimeError,&$benign) )
+		assert_instance_of(RuntimeError, trap(RuntimeError,&$runtime))
 		# Multiple exception classes
-		assert_instance_of(TypeError, try_rescue(TypeError,RuntimeError,&$typeerr))
-		assert_instance_of(RuntimeError, try_rescue(TypeError,RuntimeError,&$runtime))
+		assert_instance_of(TypeError, trap(TypeError,RuntimeError,&$typeerr))
+		assert_instance_of(RuntimeError, trap(TypeError,RuntimeError,&$runtime))
 		# Mapped exception value
-		assert_equal(0, try_rescue(RuntimeError=>0,&$runtime))
+		assert_equal(0, trap(RuntimeError=>0,&$runtime))
 		# Multiple mappings
-		assert_equal(0, try_rescue(RuntimeError=>0,TypeError=>1,&$runtime))
-		assert_equal(1, try_rescue(RuntimeError=>0,TypeError=>1,&$typeerr))
+		assert_equal(0, trap(RuntimeError=>0,TypeError=>1,&$runtime))
+		assert_equal(1, trap(RuntimeError=>0,TypeError=>1,&$typeerr))
 		# Everything
-		assert_instance_of(RuntimeError, try_rescue(RuntimeError,TypeError=>0,StandardError=>1,&$runtime))
-		assert_equal(0, try_rescue(RuntimeError,TypeError=>0,StandardError=>1,&$typeerr))
-		assert_equal(1, try_rescue(RuntimeError,TypeError=>0,StandardError=>1,&$rangeerr))
+		assert_instance_of(RuntimeError, trap(RuntimeError,TypeError=>0,StandardError=>1,&$runtime))
+		assert_equal(0, trap(RuntimeError,TypeError=>0,StandardError=>1,&$typeerr))
+		assert_equal(1, trap(RuntimeError,TypeError=>0,StandardError=>1,&$rangeerr))
 		# Miss
-		assert_raise(RangeError) { try_rescue(RuntimeError,TypeError=>0,&$rangeerr) }
+		assert_raise(RangeError) { trap(RuntimeError,TypeError=>0,&$rangeerr) }
 	end
 end
 
