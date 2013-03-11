@@ -39,9 +39,9 @@ during execution, that exception object is returned instead.
 #### Examples
 
 ```ruby
-require 'try/try'
-try { 1 } # => 1
-try { raise 'oops' } # => #<RuntimeError: oops>
+require 'try'
+Try.try { 1 } # => 1
+Try.try { raise 'oops' } # => #<RuntimeError: oops>
 ```
 
 ### `trap(*errs)`
@@ -56,11 +56,11 @@ value, for example an IOError could be replaced by an empty string.
 #### Examples
 
 ```ruby
-require 'try/trap'
-trap(RuntimeError) { raise 'oops' } # => #<RuntimeError: oops>
-trap(RuntimeError=>-1) { raise 'oops' } # => -1
-trap(RuntimeError, Exception=>nil) { raise 'oops' } # => #<RuntimeError: oops>
-trap(RuntimeError, Exception=>nil) { 1 / 0 }        # => nil
+require 'try'
+Try.trap(RuntimeError) { raise 'oops' } # => #<RuntimeError: oops>
+Try.trap(RuntimeError=>-1) { raise 'oops' } # => -1
+Try.trap(RuntimeError, Exception=>nil) { raise 'oops' } # => #<RuntimeError: oops>
+Try.trap(RuntimeError, Exception=>nil) { 1 / 0 }        # => nil
 ```
 
 Known Limitations
