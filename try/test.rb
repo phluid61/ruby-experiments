@@ -2,12 +2,12 @@
 
 require 'test/unit'
 if Kernel.method_defined? :require_relative
-	require_relative 'lib/try/try'
-	require_relative 'lib/try/trap'
+	require_relative 'lib/try'
 else
-	require './lib/try/try.rb'
-	require './lib/try/trap.rb'
+	require './lib/try.rb'
 end
+
+include Try
 
 $benign  = proc { 1 }
 $runtime = proc { raise 'Raised a RuntimeError' }
