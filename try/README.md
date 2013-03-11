@@ -40,7 +40,7 @@ during execution, that exception object is returned instead.
 
 ```ruby
 require 'try'
-Try.try { 1 } # => 1
+Try.try { 1 }            # => 1
 Try.try { raise 'oops' } # => #<RuntimeError: oops>
 ```
 
@@ -57,10 +57,28 @@ value, for example an IOError could be replaced by an empty string.
 
 ```ruby
 require 'try'
-Try.trap(RuntimeError) { raise 'oops' } # => #<RuntimeError: oops>
+Try.trap(RuntimeError) { raise 'oops' }     # => #<RuntimeError: oops>
+Try.trap(RuntimeError) { 1 / 0 }            # => (raises ZeroDivisionError)
 Try.trap(RuntimeError=>-1) { raise 'oops' } # => -1
 Try.trap(RuntimeError, Exception=>nil) { raise 'oops' } # => #<RuntimeError: oops>
 Try.trap(RuntimeError, Exception=>nil) { 1 / 0 }        # => nil
+```
+
+### `test(*errs)`
+
+Evaluates the given block and returns true unless an exception is raised.
+
+If `errs` are given, only those exceptions will be trapped, and any others
+will be raised normally.
+
+#### Examples
+
+```ruby
+require 'try'
+Try.test { 1 }             # => true
+Try.test { raise 'oops' }  # => false
+Try.test(RuntimeError) { raise 'oops' } # => false
+Try.test(RuntimeError) { 1 / 0 }        # => (raises ZeroDivisionError)
 ```
 
 Known Limitations

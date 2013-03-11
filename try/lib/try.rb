@@ -38,6 +38,26 @@ module Try
     raise
   end
 
+  #
+  # Evaluates the given block and returns true unless an exception
+  # is raised.
+  #
+  # If ((%errs%)) are given, only those exceptions will be trapped,
+  # and any other exceptions will be raised normally.
+  #
+  # @param errs an optional list of exception types to trap.
+  #
+  def test *errs, &bk
+    yield
+    true
+  rescue Exception => ex
+    return false if errs.empty?
+    errs.each do |klass|
+      return false if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
+    end
+    raise
+  end
+
   extend self
 end
 
