@@ -39,10 +39,10 @@ class TestTry < Test::Unit::TestCase
 	def test_test
 		# No args
 		assert( Try.test(&$benign) )
-		assert(!Try.test(&$runtime) )
+		assert_equal(nil, Try.test(&$runtime) )
 		# Args hit
 		assert( Try.test(RuntimeError,&$benign) )
-		assert(!Try.test(RuntimeError,&$runtime) )
+		assert_equal(nil, Try.test(RuntimeError,&$runtime) )
 		# Args miss
 		assert_raise(TypeError) { Try.test(RuntimeError,&$typeerr) }
 	end

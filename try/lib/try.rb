@@ -39,8 +39,8 @@ module Try
   end
 
   #
-  # Evaluates the given block and returns true unless an exception
-  # is raised.
+  # Evaluates the given block and returns its value.
+  # If an exception is raised, nil is returned instead.
   #
   # If ((%errs%)) are given, only those exceptions will be trapped,
   # and any other exceptions will be raised normally.
@@ -49,11 +49,10 @@ module Try
   #
   def test *errs, &bk
     yield
-    true
   rescue Exception => ex
-    return false if errs.empty?
+    return nil if errs.empty?
     errs.each do |klass|
-      return false if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
+      return nil if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
     end
     raise
   end

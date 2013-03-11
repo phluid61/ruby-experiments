@@ -66,7 +66,8 @@ Try.trap(RuntimeError, Exception=>nil) { 1 / 0 }        # => nil
 
 ### `test(*errs, &block)`
 
-Evaluates the given block and returns true unless an exception is raised.
+Evaluates the given block and returns its value.  If an exception is raised
+during execution, nil is returned instead.
 
 If `errs` are given, only those exceptions will be trapped, and any others
 will be raised normally.
@@ -75,9 +76,9 @@ will be raised normally.
 
 ```ruby
 require 'try'
-Try.test { 1 }             # => true
-Try.test { raise 'oops' }  # => false
-Try.test(RuntimeError) { raise 'oops' } # => false
+Try.test { 1 }             # => 1
+Try.test { raise 'oops' }  # => nil
+Try.test(RuntimeError) { raise 'oops' } # => nil
 Try.test(RuntimeError) { 1 / 0 }        # => (raises ZeroDivisionError)
 ```
 

@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'try'
-  s.version = '0.2.0'
+  s.version = '0.3.0'
   s.date    = '2013-03-11'
   s.summary = 'Try: do, or do not'
   s.description = 'Lazy mechanisms to capture exceptions on-the-fly.'
