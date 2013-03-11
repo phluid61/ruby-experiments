@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = 'Lazy mechanisms to capture exceptions on-the-fly.'
   s.authors = ['Matthew Kerwin']
   s.email   = 'matthew@kerwin.net.au'
-  s.files   = ['lib/tauday.rb']
+  s.files   = Dir['lib/**/*.rb']
   s.homepage = 'http://rubygems.org/gems/try'
   s.license = 'Simplified BSD License'
 
