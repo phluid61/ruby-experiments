@@ -31,7 +31,7 @@ Rubyish way.
 2. http://tecfa.unige.ch/guides/MOO/ProgMan/ProgrammersManual_3.html#SEC3
 3. http://tecfa.unige.ch/guides/MOO/ProgMan/ProgrammersManual_26.html#SEC26
 
-### `try`
+### `try &block`
 
 Evaluates the given block and returns its value.  If an exception is raised
 during execution, that exception object is returned instead.
@@ -44,7 +44,7 @@ Try.try { 1 }            # => 1
 Try.try { raise 'oops' } # => #<RuntimeError: oops>
 ```
 
-### `trap(*errs)`
+### `trap(*errs, &block)`
 
 Evaluates the given block and returns its value.  If an exception is raised
 during execution, and that exception is a `kind_of?` one of the *errs* given,
@@ -64,7 +64,7 @@ Try.trap(RuntimeError, Exception=>nil) { raise 'oops' } # => #<RuntimeError: oop
 Try.trap(RuntimeError, Exception=>nil) { 1 / 0 }        # => nil
 ```
 
-### `test(*errs)`
+### `test(*errs, &block)`
 
 Evaluates the given block and returns true unless an exception is raised.
 
