@@ -2,16 +2,6 @@
 
 #
 # Evaluates the given block and returns its value.
-# If an exception is raised, that exception is returned instead.
-#
-def try
-	yield
-rescue Exception => ex
-	ex
-end
-
-#
-# Evaluates the given block and returns its value.
 #
 # Specific exception types can be trapped, by passing them as
 # parameters.

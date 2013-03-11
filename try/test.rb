@@ -2,9 +2,11 @@
 
 require 'test/unit'
 if Kernel.method_defined? :require_relative
-	require_relative 'try.rb'
+	require_relative 'lib/try/try'
+	require_relative 'lib/try/trap'
 else
-	require './try.rb'
+	require './lib/try/try.rb'
+	require './lib/try/trap.rb'
 end
 
 $benign  = proc { 1 }
