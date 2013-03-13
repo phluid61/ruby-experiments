@@ -1,11 +1,8 @@
 # vim:ts=2:sw=2:sts=2
-
 require 'test/unit'
-if Kernel.method_defined? :require_relative
-	require_relative 'lib/try'
-else
-	require './lib/try.rb'
-end
+
+$VERBOSE = true
+require "#{File.dirname File.dirname(__FILE__)}/lib/try"
 
 $benign  = proc { 1 }
 $runtime = proc { raise 'Raised a RuntimeError' }
