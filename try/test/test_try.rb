@@ -4,6 +4,8 @@ require 'test/unit'
 $VERBOSE = true
 require "#{File.dirname File.dirname(__FILE__)}/lib/try"
 
+$OLD_RUBY = (RUBY_VERSION.to_f < 1.9)
+
 $benign  = proc { 1 }
 $runtime = proc { raise 'Raised a RuntimeError' }
 $typeerr = proc { raise TypeError,  'Raised a TypeError' }
@@ -28,8 +30,14 @@ class TestTry < Test::Unit::TestCase
 		assert_equal(1, Try.trap(RuntimeError=>0,TypeError=>1,&$typeerr))
 		# Everything
 		assert_instance_of(RuntimeError, Try.trap(RuntimeError,TypeError=>0,StandardError=>1,&$runtime))
-		assert_equal(0, Try.trap(RuntimeError,TypeError=>0,StandardError=>1,&$typeerr))
-		assert_equal(1, Try.trap(RuntimeError,TypeError=>0,StandardError=>1,&$rangeerr))
+		if $OLD_RUBY
+			# Note: before 1.9 ruby didn't have insert-ordered hashes
+			assert_equal(0, Try.trap(StandardError=>1){ Try.trap(RuntimeError,TypeError=>0,&$typeerr) } )
+			assert_equal(1, Try.trap(StandardError=>1){ Try.trap(RuntimeError,TypeError=>0,&$rangeerr) } )
+		else
+			assert_equal(0, Try.trap(RuntimeError,TypeError=>0,StandardError=>1,&$typeerr))
+			assert_equal(1, Try.trap(RuntimeError,TypeError=>0,StandardError=>1,&$rangeerr))
+		end
 		# Miss
 		assert_raise(RangeError) { Try.trap(RuntimeError,TypeError=>0,&$rangeerr) }
 	end
