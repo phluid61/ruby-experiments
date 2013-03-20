@@ -123,4 +123,4 @@ Try.trap( RuntimeError=>handle ) { raise 'oops' }
 
 ----
 
-[![Build Status](https://travis-ci.org/phluid61/ruby-experiments-gem.png)](https://travis-ci.org/phluid61/ruby-experiments-gem)
+[![Build Status](https://travis-ci.org/phluid61/ruby-experiments.png)](https://travis-ci.org/phluid61/ruby-experiments)
