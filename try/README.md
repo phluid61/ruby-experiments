@@ -120,3 +120,7 @@ Note: version 0.4.0 allows late evaluation by passing a proc as the value.
 handler = proc{|ex| puts "Oops: #{ex}"; nil }
 Try.trap( RuntimeError=>handle ) { raise 'oops' }
 ```
+
+----
+
+[![Build Status](https://travis-ci.org/phluid61/ruby-experiments-gem.png)](https://travis-ci.org/phluid61/ruby-experiments-gem)
