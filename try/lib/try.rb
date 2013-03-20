@@ -57,7 +57,9 @@ module Try
   # parameters.
   #
   # Additionally, specific exception types can default to a fallback
-  # value if passed as (({Type => value})) pairs.
+  # value if passed as (({Type => value})) pairs.  If the +value+ is
+	# a Proc, it is called and the exception object is passed as a
+	# parameter.
   #
   # Any un-trapped exception is raised normally.
   #
@@ -73,7 +75,7 @@ module Try
       return ex if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
     end
     hash.each_pair do |klass,value|
-      return value if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
+      return value.is_a?(Proc) ? value.call(ex) : value if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
     end
     raise
   end

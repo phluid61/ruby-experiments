@@ -114,3 +114,9 @@ In the MOO Code example, the fallback_expression is only evaluated if the
 relevant error is thrown.  However all fallbacks in *trap* are evalulated
 _before the block is executed_.
 
+Note: version 0.4.0 allows late evaluation by passing a proc as the value.
+
+```ruby
+handler = proc{|ex| puts "Oops: #{ex}"; nil }
+Try.trap( RuntimeError=>handle ) { raise 'oops' }
+```
