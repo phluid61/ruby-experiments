@@ -20,8 +20,8 @@ evaluate the fallback_expression and return its value.
 Ruby supports a similar, but limited, construct; for example:
 
 ```ruby
-a = 1 / 0 rescue 'oops'
-# => a == "oops"
+1 / 0 rescue $!     # => #<ZeroDivisionError: divided by 0>
+1 / 0 rescue 'oops' # => "oops"
 ```
 
 This experiment attempts to capture some of that expressive functionality in a
@@ -35,6 +35,8 @@ Rubyish way.
 
 Evaluates the given block and returns its value.  If an exception is raised
 during execution, that exception object is returned instead.
+
+This is functionally the same as `block.call rescue $!`
 
 #### Examples
 
@@ -92,6 +94,7 @@ they would be in `begin; rescue a; rescue b; rescue c; end`.
 
 Because the value-substitution form uses Ruby's magic hash parameter syntax,
 the mapped parameters must necessarily all come after the unmapped parameters.
+Additionally, in ruby 1.8, hashes are not insertion-ordered.
 
 Also: there is no syntax to map an exception type to its instance (i.e. to
 make it behave like an unmapped parameter).
@@ -114,7 +117,8 @@ In the MOO Code example, the fallback_expression is only evaluated if the
 relevant error is thrown.  However all fallbacks in *trap* are evalulated
 _before the block is executed_.
 
-Note: version 0.4.0 allows late evaluation by passing a proc as the value.
+Note: version 0.4.0 introduced late evaluation by passing a proc as the value.
+The proc is passed the exception object as its only parameter.
 
 ```ruby
 handler = proc{|ex| puts "Oops: #{ex}"; nil }
