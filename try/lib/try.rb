@@ -9,7 +9,7 @@ by MOO Code through the following  language constructs:
 
 In Ruby these become:
 
-  Try.try { unsafe_expression }
+  Try.try { unsafe_expression }  # OR: unsafe_expression rescue $!
   Try.trap(Exception=>fallback) { unsafe_expression }  # OR: unsafe_expression rescue fallback
   Try.trap(FooError, BarError) { unsafe_expression}
   Try.trap(FooError=>fallback, BarError=>fallback) { unsafe_expression }
