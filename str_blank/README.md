@@ -14,6 +14,7 @@ Tested on three strings:
 * `st = '________'` -- worst case (passes after last char)
 * `sf = '_______a'` -- worst case (fails on last char)
 * `sg = 'a_______'` -- best case (fails on first char)
+
 (Note: underscores represent space chars.)
 
 ### Ruby 2.1.0
