@@ -1,6 +1,5 @@
 require 'benchmark'
 require './blank'
-require './str_blank'
 
 st = '          ';
 sf = '         a';
