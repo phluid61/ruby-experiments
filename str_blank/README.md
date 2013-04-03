@@ -5,8 +5,10 @@ Experiments with various String#blank? whatchermajiggers.
 
 ## Benchmarks
 
-`.blank?` is the native C implementation
-`.rb_blank?` is the straight-forward regex implementation
+* `.blank?` is the native C implementation
+* `.rb_blank?` is the straight-forward regex implementation
+* `.const_blank?` is meant to optimise `rb_blank?` by storing the regex object in a class constant
+* `.glob_blank?` ditto but in a global variable
 
 Ruby 2.1.0
 ```
