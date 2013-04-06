@@ -13,15 +13,15 @@ end
 
 class Object
 	def send_if_respond_to meth, *args
-		respond_to?(meth) ? send(meth, *args) : nil
+		respond_to?(meth) ? __send__(meth, *args) : nil
 	end
 
 	def send_if_not_nil meth, *args
-		send meth, *args
+		__send__ meth, *args
 	end
 
 	def send_if_true meth, *args
-		send meth, *args
+		__send__ meth, *args
 	end
 
 	def if_not_nil &b

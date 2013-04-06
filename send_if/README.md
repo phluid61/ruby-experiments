@@ -10,7 +10,7 @@ object.send_if_respond_to :method
 is equivalent to:
 
 ```ruby
-object.respond_to?(:method) ? object.send(:method) : nil
+object.respond_to?(:method) ? object.method : nil
 ```
 
 ## if not nil
