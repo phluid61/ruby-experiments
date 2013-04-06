@@ -13,7 +13,7 @@ is equivalent to:
 object.respond_to?(:method) ? object.send(:method) : nil
 ```
 
-## `send_if_nil_nil`
+## `send_if_not_nil`
 
 ```ruby
 object.send_if_not_nil(:method)
