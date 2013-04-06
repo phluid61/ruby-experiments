@@ -6,6 +6,9 @@ class MaybeDelegator
 	def __object__
 		@o
 	end
+	def maybe
+		self
+	end
 	def method_missing *a, &b
 		@o && @o.send(*a, &b)
 	end
