@@ -1,7 +1,7 @@
 Send If
 =======
 
-## `send_if_respond_to`
+## chicken-typing
 
 ```ruby
 object.send_if_respond_to :method
@@ -13,33 +13,10 @@ is equivalent to:
 object.respond_to?(:method) ? object.send(:method) : nil
 ```
 
-## `send_if_not_nil`
+## if not nil
 
 ```ruby
 object.send_if_not_nil(:method)
-```
-
-is equivalent to:
-
-```ruby
-object.nil ? nil : object.send(:method)
-```
-
-## `send_if_true`
-
-```ruby
-object.send_if_true(:method)
-```
-
-is equivalent to:
-
-```ruby
-object && object.send(:method)
-```
-
-## `if_not_nil`
-
-```ruby
 object.if_not_nil{|obj| obj.method }
 ```
 
@@ -49,10 +26,13 @@ is equivalent to:
 object.nil ? nil : object.method
 ```
 
-## `if_true`
+## if truthy
 
 ```ruby
+object.send_if_true(:method)
 object.if_true{|obj| obj.method }
+object.maybe{ method }
+object.maybe.method
 ```
 
 is equivalent to:
