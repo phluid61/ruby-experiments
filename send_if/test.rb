@@ -25,5 +25,19 @@ class Test_send_if < Test::Unit::TestCase
 		assert_nil(        trial[$b] )
 		assert_equal(false,trial[$c] )
 	end
+	def test_if_not_nil
+		trial = lambda{|h| h.if_not_nil{|x|x['a']}.if_not_nil{|x|x['a']}.if_not_nil{|x|x['a']} }
+
+		assert_equal( "a", trial[$a] )
+		assert_nil(        trial[$b] )
+		assert_raise(NoMethodError) { trial[$c] }
+	end
+	def test_if_true
+		trial = lambda{|h| h.if_true{|x|x['a']}.if_true{|x|x['a']}.if_true{|x|x['a']} }
+
+		assert_equal( "a", trial[$a] )
+		assert_nil(        trial[$b] )
+		assert_equal(false,trial[$c] )
+	end
 end
 
