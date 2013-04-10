@@ -1,19 +1,4 @@
 
-class MaybeDelegator
-	def initialize o
-		@o = o
-	end
-	def __object__
-		@o
-	end
-	def maybe
-		self
-	end
-	def method_missing *a, &b
-		@o && @o.send(*a, &b)
-	end
-end
-
 class Object
 	def send_if_respond_to meth, *args
 		respond_to?(meth) ? __send__(meth, *args) : nil
@@ -33,14 +18,6 @@ class Object
 
 	def if_true &b
 		yield self
-	end
-
-	def maybe &b
-		if b
-			self && instance_eval(&b)
-		else
-			MaybeDelegator.new(self)
-		end
 	end
 end
 

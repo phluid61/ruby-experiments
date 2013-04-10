@@ -5,20 +5,6 @@ $a = {'x'=>{'y'=>{'z'=>'a'}}}
 $b = {'x'=>{}}
 $c = {'x'=>{'y'=>false}}
 
-class A
-  def initialize; @b = B.new; end
-  attr_accessor :b
-end
-
-class B
-  def initialize; @c = C.new; end
-  attr_accessor :c
-end
-
-class C
-  def to_i; 1; end
-end
-
 require './send_if'
 class Test_send_if < Test::Unit::TestCase
 	def test_send_if_respond_to
@@ -66,39 +52,5 @@ class Test_send_if < Test::Unit::TestCase
 		assert_equal( "a", trial[$a] )
 		assert_nil(        trial[$b] )
 		assert_equal(false,trial[$c] )
-	end
-	def test_maybe
-		a = A.new
-		# block
-		assert_equal( 1, a.maybe{ b.maybe{ c } }.to_i )
-		assert_equal( 1, a.maybe{ b.c.to_i } )
-		assert_equal( 1, a.maybe{ b }.c.to_i )
-		# delegator
-		assert_equal( 1, a.maybe.b.maybe.c.to_i )
-		assert_equal( 1, a.maybe.b.c.to_i )
-		a.b.c = nil
-		# block
-		assert_nil( a.maybe{ b.maybe{ c } } )
-		assert_nil( a.maybe{ b.c } )
-		assert_nil( a.maybe{ b }.c )
-		# delegator
-		assert_nil( a.maybe.b.maybe.c )
-		assert_nil( a.maybe.b.c )
-		a.b = nil
-		# block
-		assert_nil( a.maybe{ b.maybe{ c } } )
-		assert_raise(NoMethodError) { a.maybe{ b.c } }
-		assert_raise(NoMethodError) { a.maybe{ b }.c }
-		# delegator
-		assert_nil( a.maybe.b.maybe.c )
-		assert_raise(NoMethodError) { a.maybe.b.c }
-		a = nil
-		# block
-		assert_nil( a.maybe{ b.maybe{ c } } )
-		assert_nil( a.maybe{ b.c } )
-		assert_raise(NoMethodError) { a.maybe{ b }.c }
-		# delegator
-		assert_nil( a.maybe.b.maybe.c )
-		assert_raise(NoMethodError) { a.maybe.b.c }
 	end
 end
