@@ -2,7 +2,7 @@
 module Traversal
 	def traverse *path, &block
 		obj = self
-		while !path.empty? and obj.respond_to? :shift
+		while !path.empty? and obj.respond_to? :fetch
 			obj = obj.fetch(path.shift) do |k|
 				return yield obj, k if block_given?
 				return Traversal.default(obj, k)
@@ -30,5 +30,17 @@ end
 
 class Array
 	include Traversal
+end
+
+class Struct
+	def fetch *a, &b
+		to_h.fetch(*a, &b)
+	end
+	include Traversal
+end
+
+# Because
+class << ENV
+	extend Traversal
 end
 
