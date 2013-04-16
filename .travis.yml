@@ -3,11 +3,7 @@ rvm:
   - "2.0.0"
   - "1.9.3"
   - "1.8.7"
-  - ruby-head
   - jruby-19mode
-  - jruby-18mode
-  - jruby-head
   - rbx-19mode
-  - rbx-18mode
 before_install:
   - cd try
