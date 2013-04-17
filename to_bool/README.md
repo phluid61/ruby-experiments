@@ -4,12 +4,12 @@ Boolean Conversions
 `Bool(o)`
 ---------
 
-Converts _o_ to a boolean, using the same logic as `if o`.
+Converts _o_ to a boolean, using the same logic as `o ? true : false`.
 
 `Object.to_bool`
 ----------------
 
-Converts the object to a boolean, using the same logic as `if o`.
+Converts the object to a boolean, using the same logic as `o ? true : false`.
 
 `Object.to_b`
 -------------
