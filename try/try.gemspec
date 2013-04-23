@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.email   = 'matthew@kerwin.net.au'
   s.files   = Dir['lib/**/*.rb']
   s.homepage = 'http://rubygems.org/gems/try'
-  s.license = 'Simplified BSD License'
+  s.license = 'ISC License'
 
   s.has_rdoc = true
   s.rdoc_options <<
