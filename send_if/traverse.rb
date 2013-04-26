@@ -48,4 +48,3 @@ class Thread
 		keys.inject({}) {|h,k| h[k] = self[k] }
 	end
 end
-
