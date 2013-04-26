@@ -55,5 +55,9 @@ class Test_andand < Test::Unit::TestCase
 		assert_raise(NoMethodError) { a._?.b.c._!.to_i }
 		assert_equal( 2, a._?.b._!.c.to_i )
 	end
+	def test_andand_nested
+		a = A.new
+		assert_equal( 1, a._?.b._?.c._!.to_i._! )
+	end
 end
 

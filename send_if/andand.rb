@@ -1,11 +1,9 @@
+$nesting = 0
 
 class AndAndDelegator
 	def initialize o
 		@o = o
 		@chain = []
-	end
-	def _?
-		self
 	end
 	def _!
 		@chain.inject(@o) do |o,x|
@@ -18,6 +16,10 @@ class AndAndDelegator
 		@chain << [a,b]
 		self
 	end
+	def _?
+		@chain << [[:'_?'],nil]
+		self
+	end
 end
 
 class Object
@@ -25,4 +27,3 @@ class Object
 		AndAndDelegator.new(self)
 	end
 end
-
