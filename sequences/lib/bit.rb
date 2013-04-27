@@ -31,6 +31,8 @@ end
 
 require_relative 'core'
 
+# todo: bitwise arithmetic (&, |, ^)
+#       generalise for all sequences?
 class BitSequence < Sequence
 	def initialize
 		@data = 0
