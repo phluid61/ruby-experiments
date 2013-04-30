@@ -2,7 +2,8 @@
 require_relative 'core'
 
 class ObjectSequence < Sequence
-	def initialize
+	def initialize *args
+		super
 		@data = []
 	end
 	def length
@@ -10,6 +11,14 @@ class ObjectSequence < Sequence
 	end
 	def item(i)
 		@data[i]
+	end
+	alias :[] :item
+	def store(i,obj)
+		@data[i] = obj
+	end
+	alias :[]= :store
+	def cast(obj)
+		obj
 	end
 	def subsequence(start, length=nil)
 		return ObjectSequence.new if length == 0

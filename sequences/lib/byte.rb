@@ -2,6 +2,8 @@
 class Byte
 	def initialize b
 		case b
+		when nil
+			@i = 0
 		when String
 			b = b.unpack('CC')
 			warn "WARNING: truncating long string" if b[1]
@@ -33,7 +35,8 @@ end
 require_relative 'core'
 
 class ByteSequence < Sequence
-	def initialize
+	def initialize *args
+		super
 		@data = ''.force_encoding(Encoding::ASCII_8BIT)
 	end
 	def length
@@ -41,6 +44,20 @@ class ByteSequence < Sequence
 	end
 	def item(i)
 		Byte(@data[i])
+	end
+	alias :[] :item
+	def store(i,byte)
+		byte = Byte(byte)
+		if i > @data.length
+			@data << ("\0" * (i - @data.length)) + byte.to_s
+		else
+			@data[i..i] = byte.to_s
+		end
+		byte
+	end
+	alias :[]= :store
+	def cast(byte)
+		byte.is_a?(Byte) ? byte : Byte(byte)
 	end
 	def subsequence(start, length=nil)
 		if length
