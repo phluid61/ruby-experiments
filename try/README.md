@@ -122,7 +122,7 @@ The proc is passed the exception object as its only parameter.
 
 ```ruby
 handler = proc{|ex| puts "Oops: #{ex}"; nil }
-Try.trap( RuntimeError=>handle ) { raise 'oops' }
+Try.trap( RuntimeError=>handler ) { raise 'oops' }
 ```
 
 ----
