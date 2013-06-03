@@ -16,6 +16,10 @@ In Ruby these become:
 
 =end
 module Try
+  # In #trap this can be used to map an class of exception to the
+  # raised exception itself.
+  ORIG = Object.new
+
   #
   # Evaluates the given block and returns its value.
   # If an exception is raised, that exception is returned instead.
@@ -35,7 +39,8 @@ module Try
   # Additionally, specific exception types can default to a fallback
   # value if passed as (({Type => value})) pairs.  If the +value+ is
   # a Proc, it is called and the exception object is passed as a
-  # parameter.
+  # parameter.  If the +value+ is Try::ERROR, the exception object
+  # itself is returned.
   #
   # Any un-trapped exception is raised normally.
   #
@@ -51,7 +56,7 @@ module Try
       return ex if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
     end
     hash.each_pair do |klass,value|
-      return value.is_a?(Proc) ? value.call(ex) : value if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
+      return value.is_a?(Proc) ? value.call(ex) : (value.equal?(ORIG) ? ex : value) if klass.instance_of?(Module) ? ex.kind_of?(klass) : ex.is_a?(klass)
     end
     raise
   end

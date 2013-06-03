@@ -10,6 +10,7 @@ $benign  = proc { 1 }
 $runtime = proc { raise 'Raised a RuntimeError' }
 $typeerr = proc { raise TypeError,  'Raised a TypeError' }
 $rangeerr= proc { raise RangeError, 'Raised a RangeError' }
+$zerodiv = proc { 1 / 0 }
 $fallback= proc { 2 }
 $fallthru= proc {|ex| ex }
 
@@ -29,9 +30,11 @@ class TestTry < Test::Unit::TestCase
 		assert_equal(0, Try.trap(RuntimeError=>0,&$runtime))
 		assert_equal(2, Try.trap(RuntimeError=>$fallback,&$runtime))
 		assert_instance_of(RuntimeError, Try.trap(RuntimeError=>$fallthru,&$runtime))
+		assert_instance_of(RuntimeError, Try.trap(RuntimeError=>Try::ORIG,&$runtime))
 		# Multiple mappings
 		assert_equal(0, Try.trap(RuntimeError=>0,TypeError=>1,&$runtime))
 		assert_equal(1, Try.trap(RuntimeError=>0,TypeError=>1,&$typeerr))
+		assert_instance_of(TypeError, Try.trap(RuntimeError=>0,TypeError=>Try::ORIG,&$typeerr))
 		# Everything
 		assert_instance_of(RuntimeError, Try.trap(RuntimeError,TypeError=>0,StandardError=>1,&$runtime))
 		if !$OLD_RUBY
@@ -39,8 +42,12 @@ class TestTry < Test::Unit::TestCase
 			assert_equal(0, Try.trap(RuntimeError,TypeError=>0,StandardError=>1,&$typeerr))
 			assert_equal(1, Try.trap(RuntimeError,TypeError=>0,StandardError=>1,&$rangeerr))
 		end
+		# Old-school hierarchy-based trap hack
 		assert_equal(0, Try.trap(StandardError=>1){ Try.trap(RuntimeError,TypeError=>0,&$typeerr) } )
 		assert_equal(1, Try.trap(StandardError=>1){ Try.trap(RuntimeError,TypeError=>0,&$rangeerr) } )
+		# New-school hierarchy-based trap
+		assert_instance_of(RangeError, Try.trap(ZeroDivisionError=>Float::INFINITY, StandardError=>Try::ORIG,&$rangeerr))
+		assert_equal(Float::INFINITY, Try.trap(ZeroDivisionError=>Float::INFINITY, StandardError=>Try::ORIG,&$zerodiv))
 		# Miss
 		assert_raise(RangeError) { Try.trap(RuntimeError,TypeError=>0,&$rangeerr) }
 	end

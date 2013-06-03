@@ -96,20 +96,27 @@ Because the value-substitution form uses Ruby's magic hash parameter syntax,
 the mapped parameters must necessarily all come after the unmapped parameters.
 Additionally, in ruby 1.8, hashes are not insertion-ordered.
 
-Also: there is no syntax to map an exception type to its instance (i.e. to
-make it behave like an unmapped parameter).
+~~Also: there is no syntax to map an exception type to its instance (i.e. to
+make it behave like an unmapped parameter).~~
 
-As such, the following nesting structure may be required:
+~~As such, the following nesting structure may be required:~~
 
 ```ruby
-trap(StandardError) do
-  trap(ZeroDivisionError => Float::INFINITY) { 1 / n }
+Try.trap(StandardError) do
+  Try.trap(ZeroDivisionError => Float::INFINITY) { 1 / n }
 end
 ```
 
-...to replace a ZeroDivisonError with Infinity, but catch any other
+~~...to replace a ZeroDivisonError with Infinity, but catch any other
 StandardError (of which ZeroDivisionError is a subclass) and return it
-in-place.
+in-place.~~
+
+Version 0.5.0 introduced the `Try::ORIG` constant, to return the exception
+instance itself.  E.g.:
+
+```ruby
+Try.trap(ZeroDivisionError=>Float::INFINITY, StandardError=>Try::ORIG) { 1 / n }
+```
 
 ### Early Evaluation
 
