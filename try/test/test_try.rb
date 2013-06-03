@@ -5,6 +5,10 @@ $VERBOSE = true
 require "#{File.dirname File.dirname(__FILE__)}/lib/try"
 
 $OLD_RUBY = (RUBY_VERSION.to_f < 1.9)
+if $OLD_RUBY
+	# Monkeypatch, for Ruby 1.8 that didn't define INFINITY or NAN
+  Float::INFINITY = Object.new
+end
 
 $benign  = proc { 1 }
 $runtime = proc { raise 'Raised a RuntimeError' }
@@ -47,7 +51,10 @@ class TestTry < Test::Unit::TestCase
 		assert_equal(1, Try.trap(StandardError=>1){ Try.trap(RuntimeError,TypeError=>0,&$rangeerr) } )
 		# New-school hierarchy-based trap
 		assert_instance_of(RangeError, Try.trap(ZeroDivisionError=>Float::INFINITY, StandardError=>Try::ORIG,&$rangeerr))
-		assert_equal(Float::INFINITY, Try.trap(ZeroDivisionError=>Float::INFINITY, StandardError=>Try::ORIG,&$zerodiv))
+		if !$OLD_RUBY
+			# FIXME: test relies on insertion-ordered hash.
+			assert_equal(Float::INFINITY, Try.trap(ZeroDivisionError=>Float::INFINITY, StandardError=>Try::ORIG,&$zerodiv))
+		end
 		# Miss
 		assert_raise(RangeError) { Try.trap(RuntimeError,TypeError=>0,&$rangeerr) }
 	end
