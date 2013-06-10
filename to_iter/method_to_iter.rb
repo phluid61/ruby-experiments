@@ -1,12 +1,9 @@
+require_relative 'to_iter'
+
 # Note: this conflicts with Object#to_iter
 class Method
   def to_iter *args
-    obj = receiver
-    Enumerator.new do |y|
-      loop do
-        y << obj
-        obj = obj.send(name, *args)
-      end
-    end
+		Iterator.new receiver, name, *args
   end
 end
+
