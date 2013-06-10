@@ -1,4 +1,4 @@
-require_relative 'to_iter'
+require_relative 'iter_for'
 
 # Note: this conflicts with Object#to_iter
 class Method
