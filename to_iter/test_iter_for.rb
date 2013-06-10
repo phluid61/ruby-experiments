@@ -1,5 +1,5 @@
 require 'test/unit'
-require './to_iter.rb'
+require './iter_for.rb'
 class IterForTest < Test::Unit::TestCase
 	def test_iter_for
 		# Test on Integer#next => Integer
