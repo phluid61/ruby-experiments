@@ -30,17 +30,14 @@ static VALUE v_CLOCK_REALTIME, v_CLOCK_MONOTONIC,
 #ifdef HAVE_CLOCK_GETTIME
 
 static inline VALUE
-timespec2num(ts) {
+timespec2num(const struct timespec *ts) {
 #ifdef HAVE_LONG_LONG
-    if (!MUL_OVERFLOW_SIGNED_INTEGER_P(1000000000, (LONG_LONG)ts.tv_sec, LLONG_MIN, LLONG_MAX-999999999)) {
-	return LL2NUM(ts.tv_nsec + 1000000000 * (LONG_LONG)ts.tv_sec);
+    if (!MUL_OVERFLOW_SIGNED_INTEGER_P(1000000000, (LONG_LONG)ts->tv_sec, LLONG_MIN, LLONG_MAX-999999999)) {
+	return LL2NUM(ts->tv_nsec + 1000000000 * (LONG_LONG)ts->tv_sec);
     }
 #endif
-    return rb_funcall(LONG2FIX((ts).tv_nsec), '+', 1, rb_funcall(LONG2FIX(1000000000), '*', 1, UINT2NUM((ts).tv_sec)));
+    return rb_funcall(LONG2FIX(ts->tv_nsec, '+', 1, rb_funcall(LONG2FIX(1000000000), '*', 1, UINT2NUM(ts->tv_sec)));
 }
-/*
-#    define timespec2num(ts) UINT2NUM((ts).tv_sec*1000000000 + (ts).tv_nsec)
-*/
 
 /*
  *  call-seq:
