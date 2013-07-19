@@ -29,7 +29,21 @@ static VALUE v_CLOCK_REALTIME, v_CLOCK_MONOTONIC,
 
 #ifdef HAVE_CLOCK_GETTIME
 
-#define timespec2num(ts) UINT2NUM((ts).tv_sec*1000000000 + (ts).tv_nsec)
+#  ifdef HAVE_LONG_LONG
+#    define timespec2num(ts) { \
+      if (!MUL_OVERFLOW_SIGNED_INTEGER_P(1000000000, (LONG_LONG)ts.tv_sec, LLONG_MIN, LLONG_MAX-999999999)) { \
+	return LL2NUM(ts.tv_nsec + 1000000000 * (LONG_LONG)ts.tv_sec); \
+      } \
+      return rb_funcall(LONG2FIX((ts).tv_nsec), '+', 1, rb_funcall(LONG2FIX(1000000000), '*', 1, UINT2NUM((ts).tv_sec))); \
+    }
+#  else
+#    define timespec2num(ts) { \
+      return rb_funcall(LONG2FIX((ts).tv_nsec), '+', 1, rb_funcall(LONG2FIX(1000000000), '*', 1, UINT2NUM((ts).tv_sec))); \
+    }
+#  endif
+/*
+#    define timespec2num(ts) UINT2NUM((ts).tv_sec*1000000000 + (ts).tv_nsec)
+*/
 
 /*
  *  call-seq:
@@ -45,13 +59,14 @@ proc_clock_gettime(VALUE klass, VALUE clock_id)
 {
     clockid_t clk_id;
     struct    timespec tp;
-    VALUE     t;
 
+/*
     if (FIXNUM_P(clock_id)) {
 	clk_id = (clockid_t)FIX2UINT(clock_id);
-    } else {
+    } else {*/
 	clk_id = (clockid_t)NUM2UINT(clock_id);
-    }
+/*
+    }*/
 
     if (clock_gettime(clk_id, &tp) == -1) {
 	rb_sys_fail("clock_gettime");
@@ -73,7 +88,6 @@ proc_clock_getres(VALUE klass, VALUE clock_id)
 {
     clockid_t clk_id;
     struct    timespec res;
-    VALUE     t;
 
     if (FIXNUM_P(clock_id)) {
 	clk_id = (clockid_t)FIX2UINT(clock_id);
