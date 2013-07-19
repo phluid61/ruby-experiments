@@ -1,6 +1,6 @@
 require_relative 'lib/gettime'
 
-Process.clocks.each do |clock|
-	puts "#{clock}: #{Process.clock_gettime(clock)} @ #{Process.clock_getres(clock)}"
+Process.clocks.each do |name,id|
+	puts "#{name}: #{Process.clock_gettime(id)} @ #{Process.clock_getres(id)}"
 end
 
