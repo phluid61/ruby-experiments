@@ -29,6 +29,15 @@ static VALUE v_CLOCK_REALTIME, v_CLOCK_MONOTONIC,
 
 #ifdef HAVE_CLOCK_GETTIME
 
+#ifndef MUL_OVERFLOW_SIGNED_INTEGER_P
+#  define MUL_OVERFLOW_SIGNED_INTEGER_P(a, b, min, max) ( \
+     (a) == 0 ? 0 : \
+     (a) == -1 ? (b) < -(max) : \
+     (a) > 0 ? \
+       ((b) > 0 ? (max) / (a) < (b) : (min) / (a) > (b)) : \
+       ((b) > 0 ? (min) / (a) < (b) : (max) / (a) > (b)))
+#endif
+
 static inline VALUE
 timespec2num(const struct timespec *ts) {
 #ifdef HAVE_LONG_LONG
@@ -36,7 +45,7 @@ timespec2num(const struct timespec *ts) {
 	return LL2NUM(ts->tv_nsec + 1000000000 * (LONG_LONG)ts->tv_sec);
     }
 #endif
-    return rb_funcall(LONG2FIX(ts->tv_nsec, '+', 1, rb_funcall(LONG2FIX(1000000000), '*', 1, UINT2NUM(ts->tv_sec)));
+    return rb_funcall(LONG2FIX(ts->tv_nsec), '+', 1, rb_funcall(LONG2FIX(1000000000), '*', 1, UINT2NUM(ts->tv_sec)));
 }
 
 /*
