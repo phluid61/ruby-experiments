@@ -136,3 +136,7 @@ void Init_gettime() {
     rb_define_singleton_method(rb_mProcess, "clock_getres", proc_clock_getres, 1);
     rb_define_singleton_method(rb_mProcess, "clocks", proc_clocks, 0);
 }
+
+/*
+ * vim: ts=8:sts=4:sw=4
+ */
