@@ -9,10 +9,14 @@ class ObjectSequence < Sequence
 	def length
 		@data.length
 	end
-	def item(i)
+	def fetch(i,*rest,&block)
+		case rest.length
+		when 0; return missing_item(i,&block) if i >= @data.length
+		when 1; return rest[0] if i >= @length
+		else raise ArgumentError, "wrong number of arguments (#{rest.length+1} for 1..2)"
+		end
 		@data[i]
 	end
-	alias :[] :item
 	def store(i,obj)
 		@data[i] = obj
 	end
