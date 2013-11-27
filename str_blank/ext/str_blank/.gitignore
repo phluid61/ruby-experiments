@@ -1,0 +1,5 @@
+Makefile
+.RUBYARCHDIR.time
+Str_blank.o
+str_blank.so
+
