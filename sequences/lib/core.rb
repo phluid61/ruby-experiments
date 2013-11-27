@@ -120,4 +120,54 @@ class Sequence
 	def empty?
 		length == 0
 	end
+
+	def << item
+		push item
+	end
+
+	def + other
+		begin
+			him, me = coerce other
+		rescue TypeError
+			me, him = other.coerce self
+			return me + him
+		end
+		me = me.dup
+		him.each{|x| me.push x }
+		me
+	end
+
+	def == other
+		return false unless other.is_a? Sequence
+		return false unless length == other.length
+		zip(other).all?{|a,b| a == b }
+	end
+
+	def === other
+		s = super
+		return s if s
+
+		begin
+			him, me = coerce other
+		rescue TypeError
+			me, him = other.coerce self
+			return me === him
+		end
+		me.zip(him).all?{|a,b| a === b }
+	end
+
+	def coerce arg
+		other = case arg
+						when self.class; arg
+						when Enumerable; self.class.from_enum(arg)
+						else raise TypeError, "#{arg.class.name} can't be coerced into #{self.class.name}"
+						end
+		[other, self]
+	end
+
+	def self.from_enum(enum)
+		seq = self.new
+		enum.each{|x| seq.push(x) }
+		seq
+	end
 end
