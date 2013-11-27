@@ -27,7 +27,7 @@ class Bit
 		when false, nil
 			@i == 0
 		else
-			@i = o.to_i
+			@i == (o.to_i == 0 ? 0 : 1)
 		end
 	end
 	def inspect
@@ -42,8 +42,7 @@ end
 
 require_relative 'core'
 
-# todo: bitwise arithmetic (&, |, ^)
-#       generalise for all sequences?
+# todo: generalise bitwise arithmetic for all sequences?
 class BitSequence < Sequence
 
 	def initialize *args
@@ -156,6 +155,41 @@ class BitSequence < Sequence
 		Bit(b)
 	end
 
+	def ~@
+		mask = 0
+		@length.times{ mask = (mask << 1) | 1 }
+
+		data = ~@data & mask
+		length = @length
+
+		BitSequence.new.instance_eval{
+			@data = data
+			@length = length
+			self
+		}
+	end
+	def & o
+		i = case o
+				when Integer; o
+				else coerce(o)[0].to_i
+				end
+		self.class.from_i(@data & i)
+	end
+	def | o
+		i = case o
+				when Integer; o
+				else coerce(o)[0].to_i
+				end
+		self.class.from_i(@data | i)
+	end
+	def ^ o
+		i = case o
+				when Integer; o
+				else coerce(o)[0].to_i
+				end
+		self.class.from_i(@data ^ i)
+	end
+
 	def to_i
 		@data
 	end
@@ -177,7 +211,18 @@ class BitSequence < Sequence
 		"#<BitSequence:#{bits}>"
 	end
 
+	def coerce arg
+		other = case arg
+						when self.class; arg
+						when Integer; self.class.from_i(arg)
+						when Enumerable; self.class.from_enum(arg)
+						else raise TypeError, "#{arg.class.name} can't be coerced into #{self.class.name}"
+						end
+		[other, self]
+	end
+
 	def BitSequence.from_i(i)
+		return BitSequence.new if i == 0
 		BitSequence.new.instance_eval{
 			@data = i
 			@length = Math.log(@data,2).floor + 1
