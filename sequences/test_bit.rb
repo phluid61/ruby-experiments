@@ -130,5 +130,49 @@ class TestBitSequence < Test::Unit::TestCase
 			assert_equal x, bs.rotate(n).to_i, n.to_s
 		end
 	end
+	def test_bitwise_NOT
+		[
+			[0b1, 0b0],
+			[0b11, 0b00],
+			[0b101, 0b010],
+		].each do |n,x|
+			bs = BitSequence.from_i(n)
+			assert_equal x, (~bs).to_i
+		end
+		assert_equal 4, (~BitSequence.from_i(0b1111)).length
+	end
+	def test_bitwise_AND
+		[
+			[0b0000, 0b0000],
+			[0b1111, 0b1100],
+			[0b1010, 0b1000],
+			[0b0101, 0b0100],
+		].each do |n,x|
+			bs = BitSequence.from_i(0b1100)
+			assert_equal x, (bs & n).to_i
+		end
+	end
+	def test_bitwise_OR
+		[
+			[0b0000, 0b1100],
+			[0b1111, 0b1111],
+			[0b1010, 0b1110],
+			[0b0101, 0b1101],
+		].each do |n,x|
+			bs = BitSequence.from_i(0b1100)
+			assert_equal x, (bs | n).to_i
+		end
+	end
+	def test_bitwise_XOR
+		[
+			[0b0000, 0b1100],
+			[0b1111, 0b0011],
+			[0b1010, 0b0110],
+			[0b0101, 0b1001],
+		].each do |n,x|
+			bs = BitSequence.from_i(0b1100)
+			assert_equal x, (bs ^ n).to_i
+		end
+	end
 end
 
