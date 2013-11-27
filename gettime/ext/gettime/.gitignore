@@ -1,0 +1,5 @@
+Makefile
+.RUBYARCHDIR.time
+gettime.o
+gettime.so
+
