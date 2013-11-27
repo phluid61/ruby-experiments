@@ -41,13 +41,13 @@ class Sequence
 	end
 
 	#
-	#   fetch(i) => Bit
-	#   fetch(i, default) => Bit
-	#   fetch(i) { block } => Bit
-	#   fetch(i) {|i| block } => Bit
-	#   fetch(i) {|i, seq| block } => Bit
+	#   fetch(i) => item
+	#   fetch(i, default) => item
+	#   fetch(i) { block } => item
+	#   fetch(i) {|i| block } => item
+	#   fetch(i) {|i, seq| block } => item
 	#
-	# Returns a value from the sequence for the given index +i+.
+	# Returns an item from the sequence for the given index +i+.
 	# If the index is out of bounds, there are several options:
 	# With no other arguments, the default value/proc supplied in
 	# the constructor (if any) will be used; if +default+ is
