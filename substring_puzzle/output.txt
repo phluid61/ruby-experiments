@@ -1,0 +1,84 @@
+$ ruby -v substrings.rb 
+ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-linux]
+e<st>range w<ri>nkle cri<ngy>
+e<st>range w<ri>nkle stringwi<ngy>
+e<st>range c<ri>ngy cri<ngy>
+e<st>range c<ri>ngy stringwi<ngy>
+e<st>range st<ri>ngwingy cri<ngy>
+e<st>range st<ri>ngwingy stringwi<ngy>
+e<st>range w<rin>kle crin<gy>
+e<st>range w<rin>kle <g>u<y>
+e<st>range w<rin>kle stringwin<gy>
+e<st>range c<rin>gy crin<gy>
+e<st>range c<rin>gy <g>u<y>
+e<st>range c<rin>gy stringwin<gy>
+e<st>range st<rin>gwingy crin<gy>
+e<st>range st<rin>gwingy <g>u<y>
+e<st>range st<rin>gwingy stringwin<gy>
+e<st>range c<ringy>
+<st>op w<ri>nkle cri<ngy>
+<st>op w<ri>nkle stringwi<ngy>
+<st>op c<ri>ngy cri<ngy>
+<st>op c<ri>ngy stringwi<ngy>
+<st>op st<ri>ngwingy cri<ngy>
+<st>op st<ri>ngwingy stringwi<ngy>
+<st>op w<rin>kle crin<gy>
+<st>op w<rin>kle <g>u<y>
+<st>op w<rin>kle stringwin<gy>
+<st>op c<rin>gy crin<gy>
+<st>op c<rin>gy <g>u<y>
+<st>op c<rin>gy stringwin<gy>
+<st>op st<rin>gwingy crin<gy>
+<st>op st<rin>gwingy <g>u<y>
+<st>op st<rin>gwingy stringwin<gy>
+<st>op c<ringy>
+<st>ringwingy w<ri>nkle cri<ngy>
+<st>ringwingy w<ri>nkle stringwi<ngy>
+<st>ringwingy c<ri>ngy cri<ngy>
+<st>ringwingy c<ri>ngy stringwi<ngy>
+<st>ringwingy st<ri>ngwingy cri<ngy>
+<st>ringwingy st<ri>ngwingy stringwi<ngy>
+<st>ringwingy w<rin>kle crin<gy>
+<st>ringwingy w<rin>kle <g>u<y>
+<st>ringwingy w<rin>kle stringwin<gy>
+<st>ringwingy c<rin>gy crin<gy>
+<st>ringwingy c<rin>gy <g>u<y>
+<st>ringwingy c<rin>gy stringwin<gy>
+<st>ringwingy st<rin>gwingy crin<gy>
+<st>ringwingy st<rin>gwingy <g>u<y>
+<st>ringwingy st<rin>gwingy stringwin<gy>
+<st>ringwingy c<ringy>
+e<str>ange g<in>gerly crin<gy>
+e<str>ange g<in>gerly <g>u<y>
+e<str>ange g<in>gerly stringwin<gy>
+e<str>ange wr<in>kle crin<gy>
+e<str>ange wr<in>kle <g>u<y>
+e<str>ange wr<in>kle stringwin<gy>
+e<str>ange cr<in>gy crin<gy>
+e<str>ange cr<in>gy <g>u<y>
+e<str>ange cr<in>gy stringwin<gy>
+e<str>ange stringw<in>gy crin<gy>
+e<str>ange stringw<in>gy <g>u<y>
+e<str>ange stringw<in>gy stringwin<gy>
+e<str>ange cr<ingy>
+e<str>ange stringw<ingy>
+<str>ingwingy g<in>gerly crin<gy>
+<str>ingwingy g<in>gerly <g>u<y>
+<str>ingwingy g<in>gerly stringwin<gy>
+<str>ingwingy wr<in>kle crin<gy>
+<str>ingwingy wr<in>kle <g>u<y>
+<str>ingwingy wr<in>kle stringwin<gy>
+<str>ingwingy cr<in>gy crin<gy>
+<str>ingwingy cr<in>gy <g>u<y>
+<str>ingwingy cr<in>gy stringwin<gy>
+<str>ingwingy stringw<in>gy crin<gy>
+<str>ingwingy stringw<in>gy <g>u<y>
+<str>ingwingy stringw<in>gy stringwin<gy>
+<str>ingwingy cr<ingy>
+<str>ingwingy stringw<ingy>
+<stri>ngwingy cri<ngy>
+<stri>ngwingy stringwi<ngy>
+<strin>gwingy crin<gy>
+<strin>gwingy <g>u<y>
+<strin>gwingy stringwin<gy>
+
