@@ -1,7 +1,7 @@
 
 require_relative '../lib/chunked/simple'
 
-pump = Chunked::Simple.new(4) {|str| puts "> " + str.inspect }
+pump = Chunked::Simple.new(4) {|str| puts "> " + str.inspect, "= " + pump.peek.inspect }
 
 strings = [
 	'S',
