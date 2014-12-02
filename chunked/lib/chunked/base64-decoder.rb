@@ -41,7 +41,7 @@ module Chunked
 		alias :finalise :finalize
 
 		#
-		# If the buffer is long enough, 
+		# If the buffer is long enough, yield it to the pump proc.
 		# Invoked by #push and #finalize.
 		#
 		def pump #:nodoc:
