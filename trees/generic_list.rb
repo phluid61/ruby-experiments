@@ -10,7 +10,7 @@ class GenericList
       @prv = prv
     end
     attr_accessor :value
-    attr_accessor :nxt, :prv
+    attr_reader :nxt, :prv
 
     ##
     # Create a new node and insert it after this one.
