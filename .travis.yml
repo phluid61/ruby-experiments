@@ -1,9 +1,15 @@
 language: ruby
 rvm:
-  - "2.0.0"
-  - "1.9.3"
-  - "1.8.7"
-  - jruby-19mode
-  #- rbx-19mode
+  - ruby-head
+  - ruby-2.4
+  - ruby-2.3
+  - ruby-2.2
+  - jruby-9k
+  #- rbx
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-9k
+    #- rvm: rbx
 before_install:
   - cd try
