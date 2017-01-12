@@ -1,15 +1,13 @@
 language: ruby
 rvm:
   - ruby-head
-  - ruby-2.4
-  - ruby-2.3
-  - ruby-2.2
+  - "2.4"
+  - "2.3"
+  - "2.2"
   - jruby-9k
-  #- rbx
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-9k
-    #- rvm: rbx
 before_install:
   - cd try
