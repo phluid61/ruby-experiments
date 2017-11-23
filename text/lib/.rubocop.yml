@@ -1,0 +1,23 @@
+Style/MethodDefParentheses:
+  EnforcedStyle: require_no_parentheses_except_multiline
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+Metrics/LineLength:
+  Max: 160
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Style/FormatString:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/NumericPredicate:
+  Enabled: false
+
+Style/Encoding:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
