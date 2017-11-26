@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: BINARY
 # frozen_string_literal: true
 
 require_relative 'serialization'

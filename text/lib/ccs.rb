@@ -1,8 +1,11 @@
-# encoding: UTF-8
+# encoding: BINARY
 # frozen_string_literal: true
 
 ##
-# Coded character set (maps logical 'characters' to tangible 'codepoints')
+# Coded character set (maps logical 'characters' to tangible 'codepoints').
+#
+# You can think of this like a character repertoire, but that's not
+# technically accurate.
 #
 class CCS
   def initialize min, max, &block
@@ -15,39 +18,28 @@ class CCS
     cp >= min && cp <= max
   end
 
-  ##
-  # Default Unicode CCS.
-  #
-  Unicode = CCS.new(0, 0x10FFFF) do
-    def valid? cp
-      return false unless super
-      return false if cp >= 0xD800 && cp <= 0xDFFF
-      true
-    end
+  # Maps a codepoint to its UCS value.
+  def to_ucs cp
+    raise "invalid codepoint #{render_codepoint cp}" unless valid? cp
+    # the default implementation works for any fully UCS-compatible CCS
+    cp
   end
 
-  ##
-  # Strict Unicode CCS, that forbids non-character codepoints.
-  #
-  UnicodeStrict = CCS.new(0, 0x10FFFF) do
-    def valid? cp
-      return false unless super
-      return false if cp >= 0xD800 && cp <= 0xDFFF
-      return false if cp >= 0xFDD0 && cp <= 0xFDEF
-      return false if (cp & 0xFFFE) == 0xFFFE
-      true
-    end
+  # Maps a UCS codepoint to its local value.
+  def from_ucs cp
+    raise "invalid codepoint #{render_codepoint cp}" unless valid? cp
+    # the default implementation works for any fully UCS-compatible CCS
+    cp
   end
 
-  ##
-  # 7-bit US-ASCII
-  #
-  ASCII = CCS.new(0, 127)
-
-  ##
-  # 8-bit binary.
-  #
-  BINARY = CCS.new(0, 255)
+  # This doesn't care about validity.
+  def render_codepoint cp
+    '[%04X]' % cp
+  end
 end
+
+require_relative 'ccs/ucs'
+require_relative 'ccs/ascii'
+require_relative 'ccs/cp347'
 
 # vim: ts=2:sts=2:sw=2:expandtab

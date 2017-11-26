@@ -1,7 +1,18 @@
+AllCops:
+  DisplayCopNames: true
+
+Lint/UnneededDisable:
+  Enabled: false
+
+Metrics:
+  Severity: warning
+
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses_except_multiline
 Layout/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
+Layout/SpaceInsideBlockBraces:
+  SpaceBeforeBlockParameters: false
 Metrics/LineLength:
   Max: 160
 Metrics/CyclomaticComplexity:
@@ -13,6 +24,14 @@ Style/GuardClause:
   Enabled: false
 Style/NumericPredicate:
   Enabled: false
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses_when_complex
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+Layout/IndentArray:
+  EnforcedStyle: consistent
+Layout/MultilineArrayBraceLayout:
+  EnforcedStyle: new_line
 
 Style/Encoding:
   Enabled: false
@@ -20,4 +39,7 @@ Style/Encoding:
 Metrics/ClassLength:
   Enabled: false
 Metrics/BlockLength:
+  Enabled: false
+
+Style/AndOr:
   Enabled: false
