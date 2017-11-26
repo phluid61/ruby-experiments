@@ -11,14 +11,16 @@ require_relative 'ccs'
 class Text
   def initialize
     @length = 0
-    @codepoints = []
+    @codepoints = [].freeze
+    @chars = nil
+    @serialization = nil
   end
   attr_reader :length
 
-  def each &block
+  def each_codepoint &block
     @codepoints.each(&block)
   end
-  alias each_char each
+  alias each each_codepoint
 
   def serialize ces=CES::UTF8, ccs=nil
     ces.encode @codepoints, ccs

@@ -74,12 +74,19 @@ end
 #
 # Defaults to the UCS coded character set.
 #
+# TODO: override encode/decode to add optional 'replacement' param
+#
 CES::UTF8_Relaxed = CES.new(CCS::UCS) do
   REPLACEMENT_CODEPOINT = 0xFFFD
   REPLACEMENT_OCTETS = "\xEF\xBF\xBD".freeze
 
-  def encode_one codepoint, ccs
-    return REPLACEMENT_OCTETS unless ccs.valid? codepoint
+  ##
+  # @param +codepoint+
+  # @param +ccs+
+  # @param +replacement+ octet sequence to substitute for a bad codepoint
+  #
+  def encode_one codepoint, ccs, replacement=REPLACEMENT_OCTETS
+    return replacement unless ccs.valid? codepoint
 
     if codepoint >= 0 && codepoint <= 0x7F
       [codepoint].pack 'C'
@@ -98,8 +105,16 @@ CES::UTF8_Relaxed = CES.new(CCS::UCS) do
     end
   end
 
-  def decode_one octets, ccs
+  ##
+  # @param +octets+
+  # @param +ccs+
+  # @param +replacement+ fallback codepoint for bad data. Not validated against +ccs+
+  #
+  def decode_one octets, ccs, replacement=REPLACEMENT_CODEPOINT
     return nil if octets.empty?
+
+    #replacement = replacement.serialize(self, ccs) if replacement.respond_to? :serialize
+    replacement = replacement.each_char.map {|c| break c.ord } if replacement.respond_to? :each_char
 
     first, octets = octets.unpack('Ca*')
     return [first, octets] if first <= 0x7F
@@ -114,7 +129,7 @@ CES::UTF8_Relaxed = CES.new(CCS::UCS) do
       codepoint = first & 0b0000_0111
       num = 3
     else
-      return [REPLACEMENT_CODEPOINT, octets]
+      return [replacement, octets]
     end
 
     # On error, convert the first byte of an invalid sequence to U+FFFD,
@@ -123,7 +138,7 @@ CES::UTF8_Relaxed = CES.new(CCS::UCS) do
     fallback_octets = octets
 
     num.times do
-      return [REPLACEMENT_CODEPOINT, nil] if octets.empty?
+      return [replacement, nil] if octets.empty?
 
       oct, octets = octets.unpack('Ca*')
       if (oct & 0b1100_0000) == 0b1000_0000
@@ -131,11 +146,11 @@ CES::UTF8_Relaxed = CES.new(CCS::UCS) do
         # Note: we allow overlong encodings
         codepoint = (codepoint << 6) | part
       else
-        return [REPLACEMENT_CODEPOINT, fallback_octets]
+        return [replacement, fallback_octets]
       end
     end
 
-    return [REPLACEMENT_CODEPOINT, fallback_octets] unless ccs.valid? codepoint
+    return [replacement, fallback_octets] unless ccs.valid? codepoint
 
     [codepoint, octets]
   end

@@ -22,22 +22,23 @@ class CES
   def encode codepoints, ccs=nil
     ccs ||= default_ccs
 
-    s = Serialization.new '', self, ccs
+    buffer = ''.dup
     codepoints.each do |cp|
-      s << encode_one(cp, ccs)
+      buffer << encode_one(cp, ccs)
     end
-    s
+    Serialization.new buffer, self, ccs
   end
 
   ##
   # @return [codepoints...]
-  def decode octets, ccs=nil
+  def decode octets, ccs=nil, as_chars=false
     octets = octets.to_str unless octets.is_a? String
     ccs ||= default_ccs
 
     codepoints = []
     while octets && !octets.empty?
       cp, octets = decode_one(octets, ccs)
+      cp = encode_one(cp, ccs) if as_chars
       codepoints << cp
     end
     codepoints
