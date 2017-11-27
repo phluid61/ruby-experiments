@@ -6,7 +6,7 @@ require_relative '../ccs'
 ##
 # ISO-8859-1.
 #
-CCS::ISO8859_1 = CCS.new(0, 255) do
+CCS::ISO8859_1 = CCS.new('ISO-8859-1', 0, 255) do
   def render_codepoint cp
     return super(cp) unless valid? cp
     '\\x%02X' % cp

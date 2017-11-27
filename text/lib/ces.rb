@@ -11,15 +11,21 @@ require_relative 'ccs'
 # allow you to do weird stuff.
 #
 class CES
-  def initialize default_ccs, &block
+  def initialize name, default_ccs, &block
+    @name = name.to_str.dup.freeze
     @default_ccs = default_ccs
     instance_eval(&block) if block_given?
   end
-  attr_reader :default_ccs
+  attr_reader :name, :default_ccs
+
+  def inspect
+    "\#<CES::#{@name}>"
+  end
+  alias to_s inspect
 
   ##
   # @return serialization
-  def encode codepoints, ccs=nil
+  def encode codepoints, ccs=nil, was_ucs=true
     ccs ||= default_ccs
 
     buffer = ''.dup
@@ -55,10 +61,27 @@ class CES
   def decode_one octets, ccs # rubocop:disable Lint/UnusedMethodArgument
     raise NotImplementedError
   end
+
+  ##
+  # @throws CES::EncodingError
+  def transcode codepoints, from, to=nil
+    return codepoints if from == self
+    codepoints.map do |cp|
+      ucs_cp = from.to_ucs(cp)
+      (to || @default_ccs).from_ucs(ucs_cp)
+    end
+  end
+
+  ##
+  # Thrown whenever anything goes wrong.
+  #
+  class EncodingError < RuntimeError
+  end
 end
 
 require_relative 'ces/utf8'
 require_relative 'ces/utf16'
 require_relative 'ces/utf32'
+require_relative 'ces/sbcs'
 
 # vim: ts=2:sts=2:sw=2:expandtab

@@ -10,24 +10,27 @@ require_relative '../ces'
 #
 # FIXME: doesn't detect surrogates
 #
-CES::UTF8 = CES.new(CCS::UCS) do
+CES::UTF8 = CES.new('UTF-8', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise ArgumentError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
 
     if codepoint >= 0 && codepoint <= 0x7F
       [codepoint].pack 'C'
     elsif codepoint <= 0x10FFFF
-      first_header = 0xc0
       octets = []
-      while codepoint > 0x3f
-        octets << ((codepoint & 0x3f) | 0x80)
-        first_header = (first_header >> 1) | 0x80
+      first_max  = 0b01111111
+      first_mask = 0b00000000
+      while codepoint > first_max
+        octets << ((codepoint & 0b00111111) | 0x80)
+        codepoint >>= 6
+        first_mask = (first_mask >> 1) | 0xC0
+        first_max = (0xFF ^ first_mask) >> 1
       end
-      octets << (codepoint | first_header)
+      octets << (codepoint | first_mask)
 
-      codepoints.reverse.pack 'C*'
+      octets.reverse.pack 'C*'
     else
-      raise ArgumentError, "codepoint #{codepoint} cannot be encoded in UTF8"
+      raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF8"
     end
   end
 
@@ -35,7 +38,10 @@ CES::UTF8 = CES.new(CCS::UCS) do
     return nil if octets.empty?
 
     first, octets = octets.unpack('Ca*')
-    return [first, octets] if first <= 0x7F
+    if first <= 0x7F
+      raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? first
+      return [first, octets]
+    end
 
     if (first & 0b1110_0000) == 0b1100_0000
       codepoint = first & 0b0001_1111
@@ -47,23 +53,23 @@ CES::UTF8 = CES.new(CCS::UCS) do
       codepoint = first & 0b0000_0111
       num = 3
     else
-      raise ArgumentError, "\\x#{'%02X' % first} is not a valid initial octet in UTF8"
+      raise CES::EncodingError, "\\x#{'%02X' % first} is not a valid initial octet in UTF8"
     end
 
     num.times do
-      raise ArgumentError, 'truncated codepoint' if octets.empty?
+      raise CES::EncodingError, 'truncated codepoint' if octets.empty?
 
       oct, octets = octets.unpack('Ca*')
       if (oct & 0b1100_0000) == 0b1000_0000
         part = oct & 0b0011_1111
-        raise ArgumentError, 'overlong encoding detected' if part == 0
+        raise CES::EncodingError, 'overlong encoding detected' if part == 0
         codepoint = (codepoint << 6) | part
       else
-        raise ArgumentError, "\\x#{'%02X' % first} is not a valid continuation octet in UTF8"
+        raise CES::EncodingError, "\\x#{'%02X' % first} is not a valid continuation octet in UTF8"
       end
     end
 
-    raise ArgumentError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
 
     [codepoint, octets]
   end
@@ -76,7 +82,7 @@ end
 #
 # TODO: override encode/decode to add optional 'replacement' param
 #
-CES::UTF8_Relaxed = CES.new(CCS::UCS) do
+CES::UTF8_Relaxed = CES.new('UTF-8 (relaxed)', CCS::UCS) do
   REPLACEMENT_CODEPOINT = 0xFFFD
   REPLACEMENT_OCTETS = "\xEF\xBF\xBD".freeze
 
@@ -101,7 +107,7 @@ CES::UTF8_Relaxed = CES.new(CCS::UCS) do
 
       octets.reverse.pack 'C*'
     else
-      raise ArgumentError, "codepoint #{codepoint} cannot be encoded in UTF8_Relaxed"
+      raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF8_Relaxed"
     end
   end
 
@@ -117,7 +123,10 @@ CES::UTF8_Relaxed = CES.new(CCS::UCS) do
     replacement = replacement.each_char.map {|c| break c.ord } if replacement.respond_to? :each_char
 
     first, octets = octets.unpack('Ca*')
-    return [first, octets] if first <= 0x7F
+    if first <= 0x7F
+      return [replacement, octets] unless ccs.valid? first
+      return [first, octets]
+    end
 
     if (first & 0b1110_0000) == 0b1100_0000
       codepoint = first & 0b0001_1111

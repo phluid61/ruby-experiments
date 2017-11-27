@@ -6,7 +6,7 @@ require_relative '../ccs'
 ##
 # 7-bit US-ASCII
 #
-CCS::ASCII = CCS.new(0, 127) do
+CCS::ASCII = CCS.new('US-ASCII', 0, 127) do
   def render_codepoint cp
     return super(cp) unless valid? cp
     '\\x%02X' % cp

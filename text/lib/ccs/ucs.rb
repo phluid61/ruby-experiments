@@ -6,7 +6,7 @@ require_relative '../ccs'
 ##
 # Default Universal Character Set.
 #
-CCS::UCS = CCS.new(0, 0x10FFFF) do
+CCS::UCS = CCS.new('UCS', 0, 0x10FFFF) do
   def valid? cp
     return false unless super
     return false if cp >= 0xD800 && cp <= 0xDFFF
@@ -21,7 +21,7 @@ end
 ##
 # Strict Universal Character Set, that forbids non-character codepoints.
 #
-CCS::UCS_Strict = CCS.new(0, 0x10FFFF) do
+CCS::UCS_Strict = CCS.new('UCS (Strict)', 0, 0x10FFFF) do
   def valid? cp
     return false unless super
     return false if cp >= 0xD800 && cp <= 0xDFFF

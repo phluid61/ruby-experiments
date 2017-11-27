@@ -8,22 +8,22 @@ require_relative '../ces'
 #
 # Defaults to the UCS coded character set.
 #
-CES::UTF32 = CES.new(CCS::UCS) do
+CES::UTF32 = CES.new('UTF-32', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise ArgumentError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
-    raise ArgumentError, "codepoint #{codepoint} cannot be encoded in UTF32" if codepoint < 0 || codepoint > 0x10FFFF
-    raise ArgumentError, "codepoint #{codepoint} cannot be encoded in UTF32" if codepoint >= 0xD800 && codepoint <= 0xDFFF
+    raise CES::EncodingError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF32" if codepoint < 0 || codepoint > 0x10FFFF
+    raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF32" if codepoint >= 0xD800 && codepoint <= 0xDFFF
     [codepoint].pack 'N'
   end
 
   def decode_one octets, ccs
     return nil if octets.empty?
 
-    raise ArgumentError, 'truncated codepoint' if octets.bytesize < 4
+    raise CES::EncodingError, 'truncated codepoint' if octets.bytesize < 4
     codepoint, octets = octets.unpack('Na*')
 
-    raise ArgumentError, "surrogate codepoint #{codepoint} detected" if codepoint >= 0xD800 && codepoint <= 0xDFFF
-    raise ArgumentError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "surrogate codepoint #{codepoint} detected" if codepoint >= 0xD800 && codepoint <= 0xDFFF
+    raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
     [codepoint, octets]
   end
 end
@@ -33,21 +33,21 @@ end
 #
 # Defaults to the UCS coded character set.
 #
-CES::UCS4 = CES.new(CCS::UCS) do
+CES::UCS4 = CES.new('UCS-4', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise ArgumentError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
-    raise ArgumentError, "codepoint #{codepoint} cannot be encoded in UCS4" if codepoint < 0 || codepoint > 0x7FFF_FFFF
+    raise CES::EncodingError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UCS4" if codepoint < 0 || codepoint > 0x7FFF_FFFF
     [codepoint].pack 'N'
   end
 
   def decode_one octets, ccs
     return nil if octets.empty?
 
-    raise ArgumentError, 'truncated codepoint' if octets.bytesize < 4
+    raise CES::EncodingError, 'truncated codepoint' if octets.bytesize < 4
     codepoint, octets = octets.unpack('Na*')
 
-    raise ArgumentError, "non-zero most significant bit #{'%08X' % codepoint}" if (codepoint & 0x8000_0000) == 0x8000_0000
-    raise ArgumentError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "non-zero most significant bit #{'%08X' % codepoint}" if (codepoint & 0x8000_0000) == 0x8000_0000
+    raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
     [codepoint, octets]
   end
 end
@@ -59,21 +59,21 @@ end
 #
 # Defaults to the UCS coded character set.
 #
-CES::UTF32_Relaxed = CES.new(CCS::UCS) do
+CES::UTF32_Relaxed = CES.new('UTF-32 (relaxed)', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise ArgumentError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
-    raise ArgumentError, "codepoint #{codepoint} cannot be encoded in UTF32_Relaxed" if codepoint < 0 || codepoint > 0xFFFF_FFFF
+    raise CES::EncodingError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF32_Relaxed" if codepoint < 0 || codepoint > 0xFFFF_FFFF
     [codepoint].pack 'N'
   end
 
   def decode_one octets, ccs
     return nil if octets.empty?
 
-    raise ArgumentError, 'truncated codepoint' if octets.bytesize < 4
+    raise CES::EncodingError, 'truncated codepoint' if octets.bytesize < 4
     codepoint, octets = octets.unpack('Na*')
 
-    raise ArgumentError, "codepoint #{codepoint} cannot be encoded in UTF32" if codepoint < 0 || codepoint > 0x7FFF_FFFF
-    raise ArgumentError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF32" if codepoint < 0 || codepoint > 0x7FFF_FFFF
+    raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
     [codepoint, octets]
   end
 end
