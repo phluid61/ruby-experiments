@@ -39,8 +39,10 @@ class Serialization
       case @ccs
       when CCS::ASCII
         @octets.dup.force_encoding Encoding::US_ASCII
-      when CCS::ISO8859_1
+      when CCS::ISO8859_1, CCS::ISO8859_1_Strict
         @octets.dup.force_encoding Encoding::ISO_8859_1
+      when CCS::ISO8859_2, CCS::ISO8859_2_Strict
+        @octets.dup.force_encoding Encoding::ISO_8859_2
       when CCS::WINDOWS1252
         @octets.dup.force_encoding Encoding::Windows_1252
       when CCS::CP437

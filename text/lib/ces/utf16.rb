@@ -10,7 +10,7 @@ require_relative '../ces'
 #
 CES::UTF16 = CES.new('UTF-16', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise CES::EncodingError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
 
     if (codepoint >= 0 && codepoint <= 0xD7FF) || (codepoint >= 0xE000 && codepoint <= 0xFFFF)
       [codepoint].pack 'n'
@@ -18,7 +18,7 @@ CES::UTF16 = CES.new('UTF-16', CCS::UCS) do
       codepoint -= 0x10000
       [(codepoint >> 10) + 0xD800, (codepoint & 0x3FF) + 0xDC00].pack 'nn'
     else
-      raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF16"
+      raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} cannot be encoded in UTF16"
     end
   end
 
@@ -44,7 +44,7 @@ CES::UTF16 = CES.new('UTF-16', CCS::UCS) do
     raise CES::EncodingError, "invalid low/trailing surrogate #{'%04X' % second}" unless second >= 0xDC00 && second <= 0xDFFF
 
     codepoint = ((first & 0x3FF) << 10) | (second & 0x3FF)
-    raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
 
     [codepoint, octets]
   end
@@ -57,8 +57,8 @@ end
 #
 CES::UCS2 = CES.new('UCS-2', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise CES::EncodingError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
-    raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UCS2" if codepoint < 0 || codepoint > 0xFFFF
+    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} cannot be encoded in UCS2" if codepoint < 0 || codepoint > 0xFFFF
 
     [codepoint].pack 'n'
   end
@@ -69,7 +69,7 @@ CES::UCS2 = CES.new('UCS-2', CCS::UCS) do
     raise CES::EncodingError, 'truncated codepoint' if octets.bytesize == 1
     codepoint, octets = octets.unpack('na*')
 
-    raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
     [codepoint, octets]
   end
 end

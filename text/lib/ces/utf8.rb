@@ -12,7 +12,7 @@ require_relative '../ces'
 #
 CES::UTF8 = CES.new('UTF-8', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise CES::EncodingError, "codepoint #{codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
 
     if codepoint >= 0 && codepoint <= 0x7F
       [codepoint].pack 'C'
@@ -30,7 +30,7 @@ CES::UTF8 = CES.new('UTF-8', CCS::UCS) do
 
       octets.reverse.pack 'C*'
     else
-      raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF8"
+      raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} cannot be encoded in UTF8"
     end
   end
 
@@ -39,7 +39,7 @@ CES::UTF8 = CES.new('UTF-8', CCS::UCS) do
 
     first, octets = octets.unpack('Ca*')
     if first <= 0x7F
-      raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? first
+      raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} is not valid in #{ccs}" unless ccs.valid? first
       return [first, octets]
     end
 
@@ -69,7 +69,7 @@ CES::UTF8 = CES.new('UTF-8', CCS::UCS) do
       end
     end
 
-    raise CES::EncodingError, "codepoint #{codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
 
     [codepoint, octets]
   end
@@ -107,7 +107,7 @@ CES::UTF8_Relaxed = CES.new('UTF-8 (relaxed)', CCS::UCS) do
 
       octets.reverse.pack 'C*'
     else
-      raise CES::EncodingError, "codepoint #{codepoint} cannot be encoded in UTF8_Relaxed"
+      raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} cannot be encoded in UTF8_Relaxed"
     end
   end
 

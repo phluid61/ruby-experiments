@@ -29,6 +29,9 @@ end
     [CES::UTF32],
     [CES::SBCS, CCS::ASCII],
     [CES::SBCS, CCS::ISO8859_1],
+    [CES::SBCS, CCS::ISO8859_1_Strict],
+    [CES::SBCS, CCS::ISO8859_2],
+    [CES::SBCS, CCS::ISO8859_2_Strict],
     [CES::SBCS, CCS::WINDOWS1252],
     [CES::SBCS, CCS::CP437],
   ].each do |args|
