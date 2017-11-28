@@ -43,6 +43,10 @@ class Serialization
         @octets.dup.force_encoding Encoding::ISO_8859_1
       when CCS::ISO8859_2, CCS::ISO8859_2_Strict
         @octets.dup.force_encoding Encoding::ISO_8859_2
+      when CCS::ISO8859_3, CCS::ISO8859_3_Strict
+        @octets.dup.force_encoding Encoding::ISO_8859_3
+      when CCS::ISO8859_4, CCS::ISO8859_4_Strict
+        @octets.dup.force_encoding Encoding::ISO_8859_4
       when CCS::WINDOWS1252
         @octets.dup.force_encoding Encoding::Windows_1252
       when CCS::CP437
