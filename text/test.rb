@@ -3,12 +3,13 @@ require_relative 'lib/text'
 def banner text
   puts "\e[32m", '*', text.gsub(/^/, '* '),  "*\e[0m"
 end
+
 def wee_banner text
   puts "\e[36m", text.gsub(/^/, '* '), "\e[0m"
 end
 
 [
-  ['simple ASCII string', "ABC 123".force_encoding(Encoding::UTF_8)],
+  ['simple ASCII string', 'ABC 123'.force_encoding(Encoding::UTF_8)],
   ['ASCII string with controls', "ABC 123\n".force_encoding(Encoding::UTF_8)],
   ['8-bit string', "\u{00E6}".force_encoding(Encoding::UTF_8)],
   ['astral emoji', "\xF0\x9F\xA4\x94".force_encoding(Encoding::UTF_8)],
@@ -46,3 +47,4 @@ end
   end
 end
 
+# vim: ts=2:sts=2:sw=2:expandtab
