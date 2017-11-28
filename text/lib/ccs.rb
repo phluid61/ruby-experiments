@@ -45,10 +45,11 @@ class CCS
   end
 end
 
-require_relative 'ccs/ucs'
-require_relative 'ccs/ascii'
-require_relative 'ccs/cp437'
-require_relative 'ccs/windows1252'
-require_relative 'ccs/iso8859_1'
+dir = File.dirname(__FILE__)
+Dir["#{dir}/ccs/*.rb"].each do |fn|
+  fn[0..dir.length] = ''
+  fn.sub! /\.rb$/, ''
+  require_relative fn
+end
 
 # vim: ts=2:sts=2:sw=2:expandtab

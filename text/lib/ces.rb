@@ -79,9 +79,11 @@ class CES
   end
 end
 
-require_relative 'ces/utf8'
-require_relative 'ces/utf16'
-require_relative 'ces/utf32'
-require_relative 'ces/sbcs'
+dir = File.dirname(__FILE__)
+Dir["#{dir}/ces/*.rb"].each do |fn|
+  fn[0..dir.length] = ''
+  fn.sub! /\.rb$/, ''
+  require_relative fn
+end
 
 # vim: ts=2:sts=2:sw=2:expandtab
