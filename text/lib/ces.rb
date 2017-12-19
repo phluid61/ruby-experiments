@@ -11,10 +11,22 @@ require_relative 'ccs'
 # allow you to do weird stuff.
 #
 class CES
+  def self.instances
+    (@@instances || []).dup
+  end
+
+  def self.each &block
+    return enum_for(:each) unless block_given?
+    (@@instances || []).each(&block)
+  end
+
   def initialize name, default_ccs, &block
     @name = name.to_str.dup.freeze
     @default_ccs = default_ccs
     instance_eval(&block) if block_given?
+
+    @@instances ||= []
+    @@instances << self
   end
   attr_reader :name, :default_ccs
 

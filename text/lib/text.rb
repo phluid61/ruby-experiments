@@ -31,7 +31,6 @@ class Text
 
     @codepoints = codepoints
     @length = codepoints.length
-    @chars = nil
     @ccs = ccs
   end
   attr_reader :length, :ccs
@@ -45,7 +44,7 @@ class Text
   end
 
   def to_ruby_string
-    transcode_and_serialize.to_s
+    transcode_and_serialize.octets.dup.force_encoding Encoding::UTF_8
   end
   alias to_s to_ruby_string
 

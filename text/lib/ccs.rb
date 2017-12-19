@@ -8,11 +8,23 @@
 # technically accurate.
 #
 class CCS
+  def self.instances
+    (@@instances || []).dup
+  end
+
+  def self.each &block
+    return enum_for(:each) unless block_given?
+    (@@instances || []).each(&block)
+  end
+
   def initialize name, min, max, &block
     @name = name.to_str.dup.freeze
     @min = min
     @max = max
     instance_eval(&block) if block_given?
+
+    @@instances ||= []
+    @@instances << self
   end
   attr_reader :name
 

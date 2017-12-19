@@ -22,37 +22,7 @@ class Serialization
   end
 
   def to_str
-    # FIXME: this assumes all Unicode encodings use the
-    # right coded character set. Could get messy ...
-    case ces
-    when CES::UTF8, CES::UTF8_Relaxed
-      @octets.dup.force_encoding Encoding::UTF_8
-    when CES::UTF16
-      @octets.dup.force_encoding Encoding::UTF_16BE
-    when CES::UCS2
-      @octets.dup.force_encoding Encoding::UCS_2BE
-    when CES::UTF32, CES::UTF32_Relaxed
-      @octets.dup.force_encoding Encoding::UTF_32BE
-    when CES::UCS4
-      @octets.dup.force_encoding Encoding::UCS_4BE
-    when CES::SBCS
-      case @ccs
-      when CCS::ASCII
-        @octets.dup.force_encoding Encoding::US_ASCII
-      when CCS::ISO8859_1, CCS::ISO8859_1_Strict
-        @octets.dup.force_encoding Encoding::ISO_8859_1
-      when CCS::ISO8859_2, CCS::ISO8859_2_Strict
-        @octets.dup.force_encoding Encoding::ISO_8859_2
-      when CCS::ISO8859_3, CCS::ISO8859_3_Strict
-        @octets.dup.force_encoding Encoding::ISO_8859_3
-      when CCS::ISO8859_4, CCS::ISO8859_4_Strict
-        @octets.dup.force_encoding Encoding::ISO_8859_4
-      when CCS::WINDOWS1252
-        @octets.dup.force_encoding Encoding::Windows_1252
-      when CCS::CP437
-        @octets.dup.force_encoding Encoding::IBM437
-      end
-    end
+    @octets.dup.force_encoding Encoding::ASCII_8BIT
   end
   alias to_s to_str
 
