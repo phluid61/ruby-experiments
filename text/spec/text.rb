@@ -21,7 +21,7 @@ RSpec.describe Text do
     end
   end
 
-  it "can be iterated with \#each" do
+  it "can be iterated (by codepoint) with \#each" do
     array = 3.times.to_a
     text = Text.new(array, nil)
     i = 0
