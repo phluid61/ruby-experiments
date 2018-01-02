@@ -3,50 +3,8 @@
 
 require_relative '../ccs'
 
-##
-# ISO-8859-2
-#
-CCS::ISO8859_2 = CCS.new('ISO-8859-2', 0, 255) do
-  def to_ucs cp
-    CCS::ISO8859_2_FORWARD[cp] or raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}"
-  end
-
-  def from_ucs cp
-    CCS::ISO8859_2_REVERSE[cp] or raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}"
-  end
-
-  def render_codepoint cp
-    return super(cp) unless valid? cp
-    '\\x%02X' % cp
-  end
-end
-
-##
-# ISO-8859-2, strict mode (no control characters)
-#
-CCS::ISO8859_2_Strict = CCS.new('ISO-8859-2 (strict)', 0, 255) do
-  def valid? cp
-    (cp >= 0x20 && cp <= 0x7E) || (cp >= 0xA0 && cp <= 0xFF)
-  end
-
-  def to_ucs cp
-    raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}" unless valid? cp
-    CCS::ISO8859_2_FORWARD[cp] or raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}"
-  end
-
-  def from_ucs cp
-    raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}" unless valid? cp
-    CCS::ISO8859_2_REVERSE[cp] or raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}"
-  end
-
-  def render_codepoint cp
-    return super(cp) unless valid? cp
-    '\\x%02X' % cp
-  end
-end
-
 # rubocop:disable Metrics/LineLength, Layout/SpaceAfterComma, Style/TrailingCommaInLiteral
-CCS::ISO8859_2_FORWARD = [
+iso8859_2_table = [
   #   _0     _1     _2     _3     _4     _5     _6     _7     _8     _9     _A     _B     _C     _D     _E     _F
   0x0000,0x0001,0x0002,0x0003,0x0004,0x0005,0x0006,0x0007,0x0008,0x0009,0x000A,0x000B,0x000C,0x000D,0x000E,0x000F, # 0_
   0x0010,0x0011,0x0012,0x0013,0x0014,0x0015,0x0016,0x0017,0x0018,0x0019,0x001A,0x001B,0x001C,0x001D,0x001E,0x001F, # 1_
@@ -66,7 +24,31 @@ CCS::ISO8859_2_FORWARD = [
   0x0111,0x0144,0x0148,0x00F3,0x00F4,0x0151,0x00F6,0x00F7,0x0159,0x016F,0x00FA,0x0171,0x00FC,0x00FD,0x0163,0x02D9, # F_
   #   _0     _1     _2     _3     _4     _5     _6     _7     _8     _9     _A     _B     _C     _D     _E     _F
 ].freeze
-CCS::ISO8859_2_REVERSE = Hash[CCS::ISO8859_2_FORWARD.each_with_index.map {|e, i| [e, i] }]
 # rubocop:enable Metrics/LineLength, Layout/SpaceAfterComma, Style/TrailingCommaInLiteral
+
+##
+# ISO-8859-2
+#
+CCS::ISO8859_2 = TableCCS.new('ISO-8859-2', 0, 255, iso8859_2_table) do
+  def render_codepoint cp
+    return super(cp) unless valid? cp
+    '\\x%02X' % cp
+  end
+end
+
+##
+# ISO-8859-2, strict mode (no control characters)
+#
+CCS::ISO8859_2_Strict = TableCCS.new('ISO-8859-2 (strict)', 0, 255, iso8859_2_table) do
+  def valid? cp
+    (cp >= 0x20 && cp <= 0x7E) || (cp >= 0xA0 && cp <= 0xFF)
+  end
+
+  def render_codepoint cp
+    return super(cp) unless valid? cp
+    '\\x%02X' % cp
+  end
+end
+
 
 # vim: ts=2:sts=2:sw=2:expandtab
