@@ -58,7 +58,7 @@ RSpec.describe Text do
     string = [0xF1, 0xF2, 0xF3].pack('C*').force_encoding(Encoding::UTF_8)
     text = Text.from_ruby_string(string)
     expect(text.to_a).to eq([0xF1, 0xF2, 0xF3])
-    expect(text.ccs).to eq(CCS::WINDOWS1252)
+    expect(text.ccs).to eq(CCS::WINDOWS_1252)
   end
 
   [
@@ -113,7 +113,7 @@ RSpec.describe Text do
         [CES::SBCS, CCS::ISO_8859_3_Strict],
         [CES::SBCS, CCS::ISO_8859_4],
         [CES::SBCS, CCS::ISO_8859_4_Strict],
-        [CES::SBCS, CCS::WINDOWS1252],
+        [CES::SBCS, CCS::WINDOWS_1252],
         [CES::SBCS, CCS::CP437],
       ].each do |args|
         if args[1] && (args[1].name =~ /^(#{failures})$/)

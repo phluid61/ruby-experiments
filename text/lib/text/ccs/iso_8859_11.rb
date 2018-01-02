@@ -39,9 +39,8 @@ end
 ##
 # ISO-8859-11 Latin/Thai alphabet
 #
-CCS::ISO_8859_1    = CCS::TIS_620
+CCS::ISO_8859_11   = CCS::TIS_620
 CCS::LATIN_THAI    = CCS::TIS_620
-CCS::CP914         = CCS::TIS_620
 CCS::WINDOWS_28601 = CCS::TIS_620
 
 ##

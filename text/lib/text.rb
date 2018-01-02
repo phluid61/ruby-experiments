@@ -19,7 +19,7 @@ class Text
       # close enough...
       str = str.force_encoding(Encoding::ASCII_8BIT)
       ces = CES::SBCS
-      ccs = CCS::WINDOWS1252
+      ccs = CCS::WINDOWS_1252
     end
     codepoints = ces.decode str, ccs
     self.new codepoints, ccs
