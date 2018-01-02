@@ -80,7 +80,7 @@ RSpec.describe Text do
     [
       '8-bit string (2)',
       "\u{00F0}".dup.force_encoding(Encoding::UTF_8),
-      /US-ASCII|ISO-8859-[234].*|CP437/,
+      /US-ASCII|ISO-8859-[24].*|ISO-8859-3 \(strict\)|CP437/,
     ],
     [
       '8-bit controls',
