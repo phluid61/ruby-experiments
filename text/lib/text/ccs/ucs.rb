@@ -18,6 +18,8 @@ CCS::UCS = CCS.new('UCS', 0, 0x10FFFF) do
   end
 end
 
+CCS::ISO_10646 = CCS::UCS
+
 ##
 # Strict Universal Character Set, that forbids non-character codepoints.
 #
