@@ -25,6 +25,8 @@ class Text
     self.new codepoints, ccs
   end
 
+  include Enumerable
+
   def initialize codepoints, ccs
     codepoints = codepoints.to_a unless codepoints.is_a? Array # not to_ary
     codepoints = codepoints.dup.freeze unless codepoints.frozen?
@@ -49,7 +51,9 @@ class Text
   alias to_s to_ruby_string
 
   def each_codepoint &block
+    return enum_for(:each_codepoint) unless block_given?
     @codepoints.each(&block)
+    nil
   end
   alias each each_codepoint
 

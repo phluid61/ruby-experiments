@@ -43,7 +43,7 @@ CCS::WINDOWS_28596 = CCS::ISO_8859_6
 ##
 # ISO-8859-6, strict mode (no control characters)
 #
-CCS::ISO_8859_6_Strict = TableCCS.new('ISO-8859-6 (strict)', 0, 255, table) do
+CCS::ISO_8859_6_Strict = TableCCS.new('ISO-8859-6 (strict)', 0x20, 0xF2, table) do
   def valid? cp
     # jinkies...
     (cp >= 0x20 && cp <= 0x7E) || cp == 0xA0 || cp == 0xA4 || cp == 0xAC || cp == 0xAD || cp == 0xBB || cp == 0xBF || (cp >= 0xCA && cp <= 0xDA) || (cp >= 0xE0 && cp <= 0xF2)

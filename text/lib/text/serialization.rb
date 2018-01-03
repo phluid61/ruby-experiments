@@ -27,12 +27,16 @@ class Serialization
   alias to_s to_str
 
   def each_byte &block
+    return enum_for(:each_byte) unless block_given?
     @octets.each_byte(&block)
+    nil
   end
 
   def each_char &block
+    return enum_for(:each_char) unless block_given?
     @chars ||= @ces.decode(@octets, @ccs, true).freeze
     @chars.each(&block)
+    nil
   end
 end
 

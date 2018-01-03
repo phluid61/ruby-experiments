@@ -43,7 +43,7 @@ CCS::CP923         = CCS::ISO_8859_15
 ##
 # ISO-8859-15, strict mode (no control characters)
 #
-CCS::ISO_8859_15_Strict = TableCCS.new('ISO-8859-15 (strict)', 0, 255, table) do
+CCS::ISO_8859_15_Strict = TableCCS.new('ISO-8859-15 (strict)', 0x20, 0xFF, table) do
   def valid? cp
     (cp >= 0x20 && cp <= 0x7E) || (cp >= 0xA0 && cp <= 0xFF)
   end

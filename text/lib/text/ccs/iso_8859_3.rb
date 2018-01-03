@@ -45,7 +45,7 @@ CCS::SouthEuropean = CCS::ISO_8859_3
 ##
 # ISO-8859-3, strict mode (no control characters)
 #
-CCS::ISO_8859_3_Strict = TableCCS.new('ISO-8859-3 (strict)', 0, 255, table) do
+CCS::ISO_8859_3_Strict = TableCCS.new('ISO-8859-3 (strict)', 0x20, 0xFF, table) do
   def valid? cp
     ((cp >= 0x20 && cp <= 0x7E) || (cp >= 0xA0 && cp <= 0xFF)) && cp != 0xA5 && cp != 0xAE && cp != 0xBE && cp != 0xC3 && cp != 0xD0 && cp != 0xE3 && cp != 0xF0
   end

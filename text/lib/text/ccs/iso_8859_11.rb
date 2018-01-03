@@ -46,7 +46,7 @@ CCS::WINDOWS_28601 = CCS::TIS_620
 ##
 # TIS-620, strict mode (no control characters)
 #
-CCS::TIS_620_Strict = TableCCS.new('TIS-620 (strict)', 0, 255, table) do
+CCS::TIS_620_Strict = TableCCS.new('TIS-620 (strict)', 0x20, 0xFB, table) do
   def valid? cp
     (cp >= 0x20 && cp <= 0x7E) || (cp >= 0xA1 && cp <= 0xDA) || (cp >= 0xDF && cp <= 0xFB)
   end
@@ -60,7 +60,7 @@ end
 ##
 # ISO-8859-11, strict mode (no control characters)
 #
-CCS::ISO_8859_11_Strict = TableCCS.new('ISO-8859-11 (strict)', 0, 255, table) do
+CCS::ISO_8859_11_Strict = TableCCS.new('ISO-8859-11 (strict)', 0x20, 0xFB, table) do
   def valid? cp
     (cp >= 0x20 && cp <= 0x7E) || (cp >= 0xA0 && cp <= 0xDA) || (cp >= 0xDF && cp <= 0xFB)
   end

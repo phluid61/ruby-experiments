@@ -17,6 +17,8 @@ class CCS
     (@@instances || []).each(&block)
   end
 
+  include Enumerable
+
   def initialize name, min, max, &block
     @name = name.to_str.dup.freeze
     @min = min
@@ -35,6 +37,12 @@ class CCS
 
   def valid? cp
     cp >= @min && cp <= @max
+  end
+
+  def each
+    return enum_for(:each) unless block_given?
+    (@min..@max).each {|cp| yield cp if valid? cp }
+    nil
   end
 
   # Maps a codepoint to its UCS value.

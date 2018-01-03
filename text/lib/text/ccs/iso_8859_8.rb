@@ -44,9 +44,8 @@ CCS::WINDOWS_38598 = CCS::ISO_8859_8  # logical order
 ##
 # ISO-8859-8, strict mode (no control characters)
 #
-CCS::ISO_8859_8_Strict = TableCCS.new('ISO-8859-8 (strict)', 0, 255, table) do
+CCS::ISO_8859_8_Strict = TableCCS.new('ISO-8859-8 (strict)', 0x20, 0xFE, table) do
   def valid? cp
-    # jinkies...
     (cp >= 0x20 && cp <= 0x7E) || cp == 0xA0 || (cp >= 0xA2 && cp <= 0xBE) || cp == 0xDF || (cp >= 0xE0 && cp <= 0xFA) || cp == 0xFD || cp == 0xFE
   end
 
