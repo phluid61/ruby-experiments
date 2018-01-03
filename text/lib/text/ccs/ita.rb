@@ -3,6 +3,7 @@
 
 require_relative '../ccs'
 
+# rubocop:disable Metrics/LineLength, Layout/SpaceAfterComma, Style/TrailingCommaInLiteral
 ita1_letters = [
   0x00,   # -----
   ?A,     # +----
@@ -56,6 +57,7 @@ ita2_figures = [
   ?5,   ?+,   ?),   ?2,   0xA3, ?6,   ?0,   ?1,
   ?9,   ??,   ?&,   0x1B, ?.,   ?/,   ?;,   0x7F,
 ]
+# rubocop:enable Metrics/LineLength, Layout/SpaceAfterComma, Style/TrailingCommaInLiteral
 
 CCS::ITA1_Letters = TableCCS.new('ITA1 (Letters)', 0, 31, ita1_letters.map {|x| x.is_a?(String) ? x.ord : x })
 CCS::ITA1_Figures = TableCCS.new('ITA1 (Figures)', 0, 31, ita1_figures.map {|x| x.is_a?(String) ? x.ord : x })
