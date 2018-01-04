@@ -101,7 +101,7 @@ class TableCCS < CCS
   def initialize name, min, max, forward_map, reverse_map=nil, &block
     super(name, min, max, &block)
     @forward = forward_map
-    @reverse = reverse_map || Hash[forward_map.each_with_index.to_a]
+    @reverse = reverse_map || Hash[forward_map.each_with_index.to_a].freeze
   end
 
   def valid? cp
