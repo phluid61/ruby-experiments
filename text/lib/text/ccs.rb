@@ -1,6 +1,8 @@
 # encoding: BINARY
 # frozen_string_literal: true
 
+require_relative 'exceptions'
+
 ##
 # Coded character set (maps logical 'characters' to tangible 'codepoints').
 #
@@ -35,27 +37,51 @@ class CCS
   end
   alias to_s inspect
 
+  ##
+  # Returns a truthy value iff +cp+ is a valid codepoint in this coded character set.
+  #
   def valid? cp
     cp >= @min && cp <= @max
   end
 
+  ##
+  # Raises a Text::InvalidCodepoint if +cp+ is not a valid codepoint in this coded
+  # character set.
+  #
+  # @see #valid?
+  #
+  def assert_valid cp
+    return if valid? cp
+    raise Text::InvalidCodepoint, "codepoint #{render_codepoint cp} not valid in #{name}"
+  end
+
+  ##
+  # Executes a block for each codepoint in this coded character set.
+  # If no block is given, returns an Enumerator.
+  #
+  # @yield Integer codepoint
+  #
   def each
     return enum_for(:each) unless block_given?
     (@min..@max).each {|cp| yield cp if valid? cp }
     nil
   end
 
+  ##
   # Maps a codepoint to its UCS value.
+  #
   def to_ucs cp
-    raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}" unless valid? cp
+    assert_valid cp
     # the default implementation works for any fully UCS-compatible CCS
     cp
   end
 
+  ##
   # Maps a UCS codepoint to its local value.
+  #
   def from_ucs cp
-    raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}" unless valid? cp
     # the default implementation works for any fully UCS-compatible CCS
+    raise Text::InvalidCodepoint, "no mapping from UCS codepoint #{CCS::UCS.render_codepoint cp} in #{name}" unless valid? cp
     cp
   end
 
@@ -82,16 +108,20 @@ class TableCCS < CCS
     super(cp) && @forward[cp]
   end
 
+  ##
   # Maps a codepoint to its UCS value.
+  #
   def to_ucs cp
-    raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}" unless valid? cp
-    @forward[cp] or raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}"
+    assert_valid cp
+    @forward[cp] or raise Text::InvalidCodepoint, "codepoint #{render_codepoint cp} does not have a UCS equivalent"
   end
 
+  ##
   # Maps a UCS codepoint to its local value.
+  #
   def from_ucs ucs_cp
-    cp = @reverse[ucs_cp] or raise CES::EncodingError, "no mapping for UCS codepoint #{CCS::UCS.render_codepoint ucs_cp}"
-    raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}" unless valid? cp
+    cp = @reverse[ucs_cp] or raise Text::InvalidCodepoint, "no mapping from UCS codepoint #{CCS::UCS.render_codepoint ucs_cp} in #{name}"
+    raise Text::InvalidCodepoint, "no mapping from UCS codepoint #{CCS::UCS.render_codepoint ucs_cp} in #{name}" unless valid? cp
     cp
   end
 end

@@ -10,7 +10,7 @@ require_relative '../ces'
 #
 CES::UTF16 = CES.new('UTF-16', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
+    ccs.assert_valid codepoint
 
     if (codepoint >= 0 && codepoint <= 0xD7FF) || (codepoint >= 0xE000 && codepoint <= 0xFFFF)
       [codepoint].pack 'n'
@@ -18,14 +18,14 @@ CES::UTF16 = CES.new('UTF-16', CCS::UCS) do
       codepoint -= 0x10000
       [(codepoint >> 10) + 0xD800, (codepoint & 0x3FF) + 0xDC00].pack 'nn'
     else
-      raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} cannot be encoded in UTF16"
+      raise Text::UnencodableCodepoint, "codepoint #{ccs.render_codepoint codepoint} cannot be encoded in #{name}"
     end
   end
 
   def decode_one octets, ccs
     return nil if octets.empty?
 
-    raise CES::EncodingError, 'truncated codepoint' if octets.bytesize == 1
+    raise Text::EncodingError, 'truncated codepoint' if octets.bytesize == 1
 
     first, octets = octets.unpack('na*')
 
@@ -33,18 +33,18 @@ CES::UTF16 = CES.new('UTF-16', CCS::UCS) do
     return [first, octets] if first <= 0xD7FF || first >= 0xE000
 
     # If it's not a high surrogate, it's bad
-    raise CES::EncodingError, "unexpected low/trailing surrogate #{'%04X' % first}" unless first >= 0xD800 && first <= 0xDBFF
+    raise Text::EncodingError, "unexpected low/trailing surrogate #{'%04X' % first}" unless first >= 0xD800 && first <= 0xDBFF
 
     # At this point, we need to find the second half of the surrogate pair.
     # First check for truncation...
-    raise CES::EncodingError, 'high/leading surrogate without low/trailing pair' if octets.empty?
-    raise CES::EncodingError, 'truncated codepoint' if octets.bytesize == 1
+    raise Text::EncodingError, 'high/leading surrogate without low/trailing pair' if octets.empty?
+    raise Text::EncodingError, 'truncated codepoint' if octets.bytesize == 1
 
     second, octets = octets.unpack('na*')
-    raise CES::EncodingError, "invalid low/trailing surrogate #{'%04X' % second}" unless second >= 0xDC00 && second <= 0xDFFF
+    raise Text::EncodingError, "invalid low/trailing surrogate #{'%04X' % second}" unless second >= 0xDC00 && second <= 0xDFFF
 
     codepoint = ((first & 0x3FF) << 10) | (second & 0x3FF)
-    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    ccs.assert_valid codepoint
 
     [codepoint, octets]
   end
@@ -57,8 +57,8 @@ end
 #
 CES::UCS2 = CES.new('UCS-2', CCS::UCS) do
   def encode_one codepoint, ccs
-    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} not valid in #{ccs}" unless ccs.valid? codepoint
-    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} cannot be encoded in UCS2" if codepoint < 0 || codepoint > 0xFFFF
+    ccs.assert_valid codepoint
+    raise Text::UnencodableCodepoint, "codepoint #{ccs.render_codepoint codepoint} cannot be encoded in #{name}" if codepoint < 0 || codepoint > 0xFFFF
 
     [codepoint].pack 'n'
   end
@@ -66,10 +66,10 @@ CES::UCS2 = CES.new('UCS-2', CCS::UCS) do
   def decode_one octets, ccs
     return nil if octets.empty?
 
-    raise CES::EncodingError, 'truncated codepoint' if octets.bytesize == 1
+    raise Text::EncodingError, 'truncated codepoint' if octets.bytesize == 1
     codepoint, octets = octets.unpack('na*')
 
-    raise CES::EncodingError, "codepoint #{ccs.render_codepoint codepoint} is not valid in #{ccs}" unless ccs.valid? codepoint
+    ccs.assert_valid codepoint
     [codepoint, octets]
   end
 end

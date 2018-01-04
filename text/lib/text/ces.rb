@@ -1,6 +1,7 @@
 # encoding: BINARY
 # frozen_string_literal: true
 
+require_relative 'exceptions'
 require_relative 'ccs'
 
 ##
@@ -37,6 +38,7 @@ class CES
 
   ##
   # @return serialization
+  #
   def encode codepoints, ccs=nil, was_ucs=true
     ccs ||= default_ccs
 
@@ -49,6 +51,7 @@ class CES
 
   ##
   # @return [codepoints...]
+  #
   def decode octets, ccs=nil, as_chars=false
     octets = octets.to_str unless octets.is_a? String
     ccs ||= default_ccs
@@ -64,30 +67,27 @@ class CES
 
   ##
   # @return octets
+  #
   def encode_one codepoint, ccs # rubocop:disable Lint/UnusedMethodArgument
     raise NotImplementedError
   end
 
   ##
   # @return [codepoint, remainder|nil] or nil
+  #
   def decode_one octets, ccs # rubocop:disable Lint/UnusedMethodArgument
     raise NotImplementedError
   end
 
   ##
-  # @throws CES::EncodingError
+  # @throw Text::TextError of some sort, probably
+  #
   def transcode codepoints, from, to=nil
     return codepoints if from == self
     codepoints.map do |cp|
       ucs_cp = from.to_ucs(cp)
       (to || @default_ccs).from_ucs(ucs_cp)
     end
-  end
-
-  ##
-  # Thrown whenever anything goes wrong.
-  #
-  class EncodingError < RuntimeError
   end
 end
 

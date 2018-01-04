@@ -35,12 +35,6 @@ CCS::FIELDATA = TableCCS.new('FIELDATA', 0, 127, table) do
     return sprintf('0x%02X [%s]', cp, @names[cp]) if valid? cp
     super(cp)
   end
-
-  # Maps a codepoint to its UCS value.
-  def to_ucs cp
-    raise CES::EncodingError, "invalid codepoint #{render_codepoint cp}" unless valid? cp
-    @forward[cp] or raise CES::EncodingError, "codepoint '#{render_codepoint cp}' does not have a UCS equivalent"
-  end
 end
 # rubocop:enable Metrics/LineLength, Layout/SpaceAfterComma, Style/TrailingCommaInLiteral
 

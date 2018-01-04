@@ -118,7 +118,7 @@ RSpec.describe Text do
       ].each do |args|
         if args[1] && (args[1].name =~ /^(#{failures})$/)
           it "should not transcode to #{args.join '+'}" do
-            expect { text.transcode_and_serialize(*args) }.to raise_error(CES::EncodingError)
+            expect { text.transcode_and_serialize(*args) }.to raise_error(Text::TextError)
           end
         else
           it "should transcode to #{args.join '+'}" do

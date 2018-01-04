@@ -1,6 +1,7 @@
 # encoding: BINARY
 # frozen_string_literal: true
 
+require_relative 'text/exceptions'
 require_relative 'text/serialization'
 require_relative 'text/ces'
 require_relative 'text/ccs'
