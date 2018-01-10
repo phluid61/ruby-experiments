@@ -105,7 +105,7 @@ class TableCCS < CCS
   end
 
   def valid? cp
-    super(cp) && @forward[cp]
+    super(cp) && !(@forward[cp].nil?)
   end
 
   ##
