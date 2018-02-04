@@ -182,12 +182,6 @@ class Parser
     #
     def extract_dictionary
       dict = {}
-
-      if empty? true
-        ows!
-        return dict
-      end
-
       loop do
         key = extract_label
         raise "duplicate key #{key.inspect}" if dict.key? key
@@ -216,11 +210,6 @@ class Parser
     #
     def extract_list
       list = []
-
-      if empty? true
-        ows!
-        return list
-      end
 
       loop do
         item = if start_with? /#{LABEL}#{OWS};/
