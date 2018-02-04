@@ -16,13 +16,24 @@ require_relative 'objecty'
   [:parse_list, 'a,123, -3.14 ,*YQ* , "z"',                 ['a', 123, -3.14, 'a', 'z']],
   [:parse_list, 'a,a,a,a',                                  ['a','a','a','a']],
   [:parse_plabel, 'text/plain; charset=utf-8; test',        ['text/plain', {'charset'=>'utf-8', 'test'=>nil}]],
+
+  [:parse_list, 'a, 123, b;c=d;e, f', ['a', 123, ['b', {'c'=>'d','e'=>nil}], 'f']],
 ].each do |args|
   puts '-'*5
   method, string, exp = args
   parser = Parser.new(string)
-  p args
-  #p parser.parse_autodetect
-  p(actual = parser.__send__(method))
+  puts "Header: #{string}"
+
+  print '=> '
+  print (actual = parser.parse_autodetect).inspect
+  if actual == exp
+    puts "  :)"
+  else
+    puts "  :(  #{exp.inspect}"
+  end
+
+  print '=> '
+  print (actual = parser.__send__(method)).inspect
   if actual == exp
     puts "  :)"
   else
@@ -36,6 +47,8 @@ puts '='*5
 [
   # syntax
   [:parse_dictionary, 'text/plain; test='],
+  [:parse_dictionary, ''],
+  [:parse_list, ''],
   [:parse_item, '00000000000000000001'],
   [:parse_item, '"unterminated string'],
   [:parse_item, '*unterminated binary'],
@@ -51,12 +64,16 @@ puts '='*5
 ].each do |args|
   method, string = args
   parser = Parser.new(string)
-  p args
+  puts "Header: #{string}"
+
+  print '=> '
   begin
     p parser.parse_autodetect
   rescue => e
     puts e
   end
+
+  print '=> '
   begin
     p parser.__send__(method)
   rescue => e
