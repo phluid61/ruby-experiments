@@ -63,28 +63,34 @@ def tween a, z, progress
   a + travelled
 end
 
-def project x0,y0, x1,y1, stepN
-  # FIXME: SQRT(2)
-  how_far_along = Rational(stepN, $steps - 1)
-
-  [
-    tween(x0, x1, how_far_along).to_i,
-    tween(y0, y1, how_far_along).to_i,
-  ]
+def reduce vals, how_far_along
+  return vals[0] if vals.length == 1
+  prev = nil
+  list = []
+  vals.each do |val|
+    if prev.nil?
+      prev = val
+      next
+    end
+    list << tween(prev, val, how_far_along)
+    prev = val
+  end
+  reduce list, how_far_along
 end
 
 ($steps - 2).times do |_step|
   step = _step + 1
 
-  x1, y1 = project 0,$Y, $A,$B, step
-  x2, y2 = project x1,y1, $X,$Y, step
+  how_far_along = Rational(step, $steps - 1)
+
+  x = reduce([0, $A, $X], how_far_along).to_i
+  y = reduce([$Y,$B, $Y], how_far_along).to_i
 
   # -- draw real point
 
-  how_far_along = Rational(step, $steps - 1)
   g = tween(0, 255, how_far_along).to_i
 
-  set x2,y2, 0,g,255-g
+  set x,y, 0,g,255-g
 end
 
 # -- draw origin

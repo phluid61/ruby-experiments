@@ -65,7 +65,6 @@ end
 
 $steps = [$X,$Y,$A,$B,$U,$V].max if $steps.nil?
 
-
 # -- clear screen
 
 $bitmap = ($Y + 1).times.map { ($X + 1).times.map { [255,255,255] } }
@@ -84,25 +83,28 @@ def tween a, z, progress
   a + travelled
 end
 
+def reduce vals, how_far_along
+  return vals[0] if vals.length == 1
+  prev = nil
+  list = []
+  vals.each do |val|
+    if prev.nil?
+      prev = val
+      next
+    end
+    list << tween(prev, val, how_far_along)
+    prev = val
+  end
+  reduce list, how_far_along
+end
+
 ($steps - 2).times do |_step|
   step = _step + 1
 
-  # FIXME: SQRT(2)
   how_far_along = Rational(step, $steps - 1)
 
-  x1 = tween 0, $A, how_far_along # ORIGIN->ANCHOR1
-  x2 = tween $A,$U, how_far_along # ANCHOR1->ANCHOR2
-  x3 = tween $U,$X, how_far_along # ANCHOR2->END
-  xa = tween x1,x2, how_far_along
-  xb = tween x2,x3, how_far_along
-  x = tween xa, xb, how_far_along # actual point
-
-  y1 = tween 0, $B, how_far_along # ORIGIN->ANCHOR1
-  y2 = tween $B,$V, how_far_along # ANCHOR1->ANCHOR2
-  y3 = tween $V,$Y, how_far_along # ANCHOR2->END
-  ya = tween y1,y2, how_far_along
-  yb = tween y2,y3, how_far_along
-  y = tween ya, yb, how_far_along # actual point
+  x = reduce([0, $A, $U, $X], how_far_along)
+  y = reduce([0, $B, $V, $Y], how_far_along)
 
   # -- draw real point
 
