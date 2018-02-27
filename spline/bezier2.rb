@@ -25,11 +25,11 @@ end
 
 parser.parse!
 
-$A =      rand($X / 2 - 2) + 1
-$B = $Y - rand(2 * $Y / 3 - 2) + 1
+$A = rand($X / 2 - 2) + 1
+$B = rand(2 * $Y / 3 - 2) + 1
 
 $U = $X - rand($X / 2 - 2) + 1
-$V =      rand(2 * $Y / 3 - 2) + 1
+$V = rand(2 * $Y / 3 - 2) + 1
 
 begin
   unless ARGV.empty?
@@ -91,18 +91,12 @@ end
   how_far_along = Rational(step, $steps - 1)
 
   x1 = tween 0, $A, how_far_along # ORIGIN->ANCHOR1
-  x2 = tween $A,$U, how_far_along # ANCHOR1->ANCHOR2
-  x3 = tween $U,$X, how_far_along # ANCHOR2->END
-  xa = tween x1,x2, how_far_along
-  xb = tween x2,x3, how_far_along
-  x = tween xa, xb, how_far_along # actual point
+  x2 = tween $U,$X, how_far_along # ANCHOR2->END
+  x = tween x1, x2, how_far_along # actual point
 
-  y1 = tween 0, $B, how_far_along # ORIGIN->ANCHOR1
-  y2 = tween $B,$V, how_far_along # ANCHOR1->ANCHOR2
-  y3 = tween $V,$Y, how_far_along # ANCHOR2->END
-  ya = tween y1,y2, how_far_along
-  yb = tween y2,y3, how_far_along
-  y = tween ya, yb, how_far_along # actual point
+  y1 = tween $Y, $B, how_far_along # ORIGIN->ANCHOR1
+  y2 = tween $V,$Y, how_far_along # ANCHOR2->END
+  y = tween y1, y2, how_far_along # actual point
 
   # -- draw real point
 
@@ -113,7 +107,7 @@ end
 
 # -- draw origin
 
-set 0,0, 0,0,255
+set 0,$Y, 0,0,255
 
 # -- draw end
 
