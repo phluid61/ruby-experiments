@@ -1,18 +1,18 @@
 #!ruby
 
-$X = 799
-$Y = 799
+$X = 639
+$Y = 479
 
 require 'optparse'
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{$0} [options] [<x>,<y>]"
 
-  opts.on('-wN', '--width=N', OptionParser::DecimalInteger, 'screen width (default=100)') do |val|
+  opts.on('-wN', '--width=N', OptionParser::DecimalInteger, 'screen width (default=640)') do |val|
     raise "width must be a positive integer (#{val})" if val < 1
     $X = val - 1
   end
 
-  opts.on('-hN', '--height=N', OptionParser::DecimalInteger, 'screen height (default=40)') do |val|
+  opts.on('-hN', '--height=N', OptionParser::DecimalInteger, 'screen height (default=480)') do |val|
     raise "height must be a positive integer (#{val})" if val < 1
     $Y = val - 1
   end
