@@ -50,22 +50,9 @@ $steps = [$X,$Y,$A,$B].max if $steps.nil?
 $bitmap = ($Y + 1).times.map { ($X + 1).times.map { [255,255,255] } }
 
 def set x, y, r, b, g
+  return if y < 0 || y > $bitmap.length || x < 0 || x > $bitmap[y].length
   $bitmap[y][x] = [r, g, b]
   nil
-end
-
-# -- draw origin
-
-set 0,0, 0,0,255
-
-# -- draw end
-
-set $X,$Y, 0,255,0
-
-# -- draw anchor, if on-screen
-
-if $A >= 0 && $A <= $X && $B >= 0 && $B <= $Y
-  set $A,$B, 255,127,0
 end
 
 # -- draw path
@@ -99,6 +86,27 @@ end
 
   set x2,y2, 0,g,255-g
 end
+
+# -- draw origin
+
+set 0,0, 0,0,255
+
+# -- draw end
+
+set $X,$Y, 0,255,0
+
+# -- draw anchor, if on-screen
+
+set $A,$B, 255,127,0
+set $A-1,$B-1, 255,127,0
+set $A+1,$B-1, 255,127,0
+set $A+1,$B+1, 255,127,0
+set $A-1,$B+1, 255,127,0
+
+set $A-2,$B-2, 255,127,0
+set $A+2,$B-2, 255,127,0
+set $A+2,$B+2, 255,127,0
+set $A-2,$B+2, 255,127,0
 
 # == END OF PROGRAM
 
