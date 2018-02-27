@@ -38,7 +38,7 @@ end
 
 # == START OF PROGRAM
 
-# ORIGIN: 0,0
+# ORIGIN:  0,$Y
 # ANCHOR: $A,$B
 # END:    $X,$Y
 
@@ -95,11 +95,17 @@ end
 
 # -- draw origin
 
-set 0,$Y, 0,0,255
+set 0,$Y  , 0,0,255
+set 1,$Y  , 0,0,255
+set 1,$Y-1, 0,0,255
+set 0,$Y-1, 0,0,255
 
 # -- draw end
 
-set $X,$Y, 0,255,0
+set $X  ,$Y  , 0,255,0
+set $X-1,$Y  , 0,255,0
+set $X-1,$Y-1, 0,255,0
+set $X  ,$Y-1, 0,255,0
 
 # -- draw anchor, if on-screen
 
