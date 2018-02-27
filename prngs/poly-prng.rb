@@ -33,7 +33,7 @@ class PolyPRNG
   end
 
   def rand max=nil
-    if max
+    if max && !max.zero?
       next_bits(Math.log2(max).ceil) % max
     else
       Float('0x%xp-53' % next_bits(53))

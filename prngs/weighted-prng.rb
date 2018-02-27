@@ -12,7 +12,7 @@ class WeightedPRNG
   def domain() @n; end
 
   def rand max=nil
-    if max
+    if max && !max.zero?
       if max < @n && max > 0
         rand1 max
       elsif max == @n

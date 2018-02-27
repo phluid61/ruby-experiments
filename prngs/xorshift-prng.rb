@@ -9,7 +9,7 @@ class AbstractXorshiftPRNG
   end
 
   def rand max=nil
-    if max
+    if max && !max.zero?
       (rand_n * max) / 0xFFFFFFFF
     else
       rand_n.to_f / 0xFFFFFFFF
@@ -23,7 +23,7 @@ end
 
 class AbstractXorshift64PRNG < AbstractXorshiftPRNG
   def rand max=nil
-    if max
+    if max && !max.zero?
       (rand_n * max) / 0xFFFFFFFF_FFFFFFFF
     else
       rand_n.to_f / 0xFFFFFFFF_FFFFFFFF
