@@ -4,6 +4,10 @@ class AbstractXorshiftPRNG
     srand seed
   end
 
+  def inspect
+    "\#<#{self.class} seed=0x#{@seed.to_s 16}>"
+  end
+
   def srand seed=nil
     raise NotImplementedError
   end

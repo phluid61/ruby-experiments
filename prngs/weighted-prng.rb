@@ -8,6 +8,10 @@ class WeightedPRNG
     srand s
   end
 
+  def inspect
+    "\#<#{self.class} seed=0x#{@s.to_s 16} domain=#{@n}>"
+  end
+
   def seed() @s; end
   def domain() @n; end
 
