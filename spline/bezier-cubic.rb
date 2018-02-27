@@ -103,14 +103,14 @@ end
 
   how_far_along = Rational(step, $steps - 1)
 
-  x = reduce([0, $A, $U, $X], how_far_along)
-  y = reduce([0, $B, $V, $Y], how_far_along)
+  x = reduce([0, $A, $U, $X], how_far_along).to_i
+  y = reduce([0, $B, $V, $Y], how_far_along).to_i
 
   # -- draw real point
 
   g = tween(0, 255, how_far_along).to_i
 
-  set x.to_i,y.to_i, 0,g,255-g
+  set x,y, 0,g,255-g
 end
 
 # -- draw origin
