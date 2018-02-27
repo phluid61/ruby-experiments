@@ -25,11 +25,11 @@ end
 
 parser.parse!
 
-$A = rand($X - 2) + 1
-$B = rand($Y - 2) + 1
+$A = rand($X / 2 - 2) + 1
+$B = rand(2 * $Y / 3 - 2) + 1
 
-$U = rand($X - 2) + 1
-$V = rand($Y - 2) + 1
+$U = $X - rand($X / 2 - 2) + 1
+$V = rand(2 * $Y / 3 - 2) + 1
 
 begin
   unless ARGV.empty?
@@ -94,7 +94,7 @@ end
   x2 = tween $U,$X, how_far_along # ANCHOR2->END
   x = tween x1, x2, how_far_along # actual point
 
-  y1 = tween 0, $B, how_far_along # ORIGIN->ANCHOR1
+  y1 = tween $Y, $B, how_far_along # ORIGIN->ANCHOR1
   y2 = tween $V,$Y, how_far_along # ANCHOR2->END
   y = tween y1, y2, how_far_along # actual point
 
@@ -107,7 +107,7 @@ end
 
 # -- draw origin
 
-set 0,0, 0,0,255
+set 0,$Y, 0,0,255
 
 # -- draw end
 

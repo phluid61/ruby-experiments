@@ -27,7 +27,7 @@ parser.parse!
 
 if ARGV.length == 0
   $A = rand($X - 2) + 1
-  $B = rand($Y - 2) + 1
+  $B = rand($Y / 2 - 2) + 1
 elsif ARGV.length == 1 && (m = /\A([+-]?\d+),([+-]?\d+)\z/.match(ARGV[0]))
   $A = Integer(m[1], 10)
   $B = Integer(m[2], 10)
@@ -76,7 +76,7 @@ end
 ($steps - 2).times do |_step|
   step = _step + 1
 
-  x1, y1 = project 0,0, $A,$B, step
+  x1, y1 = project 0,$Y, $A,$B, step
   x2, y2 = project x1,y1, $X,$Y, step
 
   # -- draw real point
@@ -89,7 +89,7 @@ end
 
 # -- draw origin
 
-set 0,0, 0,0,255
+set 0,$Y, 0,0,255
 
 # -- draw end
 
