@@ -19,10 +19,10 @@ class PolyPRNG
   end
 
   def next_bit
-    overflow = @seed >> 31
-    @seed = (@seed << 1) & 0xFFFFFFFF
-    @seed ^= (overflow * 0x1EDC6F41) & 0xFFFFFFFF
-    @seed & 1
+    overflow = @state >> 31
+    @state = (@state << 1) & 0xFFFFFFFF
+    @state ^= (overflow * 0x1EDC6F41) & 0xFFFFFFFF
+    @state & 1
   end
 
   def next_bits n
