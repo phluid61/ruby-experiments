@@ -113,12 +113,7 @@ module ZBase32
         end
       end
 
-      if arr.length % 8 != 0
-        pad = '=' * (8 - (arr.length % 8))
-      else
-        pad = ''
-      end
-      arr.join + pad
+      arr.join
     end
   end
 end
