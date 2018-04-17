@@ -12,7 +12,7 @@ module Base32
       str.scan(/.{1,8}/).each do |chunk|
         if chunk.length == 8
           bits = chunk.each_char.map{|chr| RDICT[chr] }.reduce(0){|accum, e| (accum << 5) | e }
-          out << [bits].pack('Q>')[-5..-1]
+          out << [bits >> 32, bits & 0xffffffff].pack('CL>')
         else
           bit_pool = 0
           pool_size = 0
