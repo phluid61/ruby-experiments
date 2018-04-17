@@ -62,7 +62,7 @@ $binary_data = [
     rest = []
   end
 
-  Display.h1 "#{mod} #{rest.empty? ? '' : '('+rest.join(',')+')'}"
+  Display.h1 " #{mod} #{rest.empty? ? '' : '('+rest.join(',')+') '}"
 
   $binary_data.each do |bin|
     Display.h2 bin.inspect
@@ -71,6 +71,12 @@ $binary_data = [
     Display.label '  strict_encode', s32
     Display.label '=>strict_decode', (mod.strict_decode32(s32, *rest) rescue $!), bin
     Display.label '=>decode', (mod.decode32(s32, *rest) rescue $!), bin
+
+    if (p = mod.singleton_class::PADDING) && s32.end_with?(p)
+      t32 = s32.sub(/(#{p})+\z/, '')
+      Display.label '+ strip', t32
+      Display.label '=>decode', (mod.decode32(t32, *rest) rescue $!), bin
+    end
 
     b32 = mod.encode32(bin, *rest)
     Display.label '  encode', b32
