@@ -7,7 +7,7 @@ module ZBase32
     def decode32 str
       # ignore padding, invalid chars
       out = +''.b
-      str = str.gsub(/[^a-hj-uw-z13-9]+/, '').b
+      str = str.gsub(/[^a-km-uw-z13-9]+/, '').b
       str.scan(/.{1,8}/).each do |chunk|
         if chunk.length == 8
           bits = chunk.each_char.map{|chr| RDICT[chr] }.reduce(0){|accum, e| (accum << 5) | e }
@@ -50,7 +50,7 @@ module ZBase32
     def strict_decode32 str
       out = +''.b
       return out if str.empty?
-      raise ArgumentError, 'invalid z-base-32' unless str =~ /\A[a-hj-uw-z13-9]+\z/
+      raise ArgumentError, 'invalid z-base-32' unless str =~ /\A[a-km-uw-z13-9]+\z/
       str = str.b.sub(/=+\z/, '')
       str.scan(/.{1,8}/).each do |chunk|
         if chunk.length == 8
