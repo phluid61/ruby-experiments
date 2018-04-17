@@ -27,7 +27,8 @@ module ZBase32
           remainder = pool_size % 8
           # check padding, maybe expand out
           mask = (1 << remainder) - 1
-          bit_pool >>= remainder unless (bit_pool & mask).zero?
+          warn 'detected non-zero padding bits in base32 data' unless (bit_pool & mask).zero?
+          bit_pool >>= remainder
 
           num_bytes = pool_size / 8
           bytes = [0] * num_bytes
@@ -69,9 +70,9 @@ module ZBase32
           end
 
           remainder = pool_size % 8
-          # check padding, maybe expand out
           mask = (1 << remainder) - 1
-          bit_pool >>= remainder unless (bit_pool & mask).zero?
+          raise ArgumentError, 'invalid z-base-32 (non-zero padding bits)' unless (bit_pool & mask).zero?
+          bit_pool >>= remainder
 
           num_bytes = pool_size / 8
           bytes = [0] * num_bytes
