@@ -13,7 +13,7 @@ module CrockfordBase32
       str = str.b.upcase.gsub('-','').gsub('O','0').gsub(/[IL]/,'1')
       str = str.gsub(/[^0-9A-HJKMNP-TV-Z]+[*~$=U]?/, '')
 
-      if str.sub! /([*~$=U])\Z/
+      if str.sub!(/([*~$=U])\Z/, '')
         checksum = RCHECK[$1]
       else
         checksum = nil
@@ -36,7 +36,7 @@ module CrockfordBase32
 
           remainder = pool_size % 8
           #-- validate padding
-          mask = (2 << remainder) - 1
+          mask = (1 << remainder) - 1
           warn 'detected non-zero padding bits in base32 data' unless (bit_pool & mask).zero?
           #--
           bit_pool >>= remainder
@@ -60,7 +60,7 @@ module CrockfordBase32
       out
     end
 
-    def encode32 bin, checksum=nil
+    def encode32 bin, checksum=false
       # insert hyphens every 8 characters
       strict = strict_encode32(bin, checksum)
       strict.scan(/.{1,8}/).join('-')
@@ -73,7 +73,7 @@ module CrockfordBase32
       str = str.gsub(/[^0-9A-HJKMNP-TV-Z]+[*~$=U]?/, '')
       raise ArgumentError, 'invalid crockford-base32' unless str =~ /\A[0-9A-HJKMNP-TV-Z]+[*~$=U]?\z/
 
-      if str.sub! /([*~$=U])\Z/
+      if str.sub!(/([*~$=U])\Z/, '')
         checksum = RCHECK[$1]
       else
         checksum = nil
@@ -96,7 +96,7 @@ module CrockfordBase32
 
           remainder = pool_size % 8
           #-- validate padding
-          mask = (2 << remainder) - 1
+          mask = (1 << remainder) - 1
           raise ArgumentError, 'invalid crockford-base32 (non-zero padding bits)' unless (bit_pool & mask).zero?
           #--
           bit_pool >>= remainder

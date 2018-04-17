@@ -25,7 +25,7 @@ module Base32
 
           remainder = pool_size % 8
           #-- validate padding
-          mask = (2 << remainder) - 1
+          mask = (1 << remainder) - 1
           warn 'detected non-zero padding bits in base32 data' unless (bit_pool & mask).zero?
           #--
           bit_pool >>= remainder
@@ -72,7 +72,7 @@ module Base32
 
           remainder = pool_size % 8
           #-- validate padding
-          mask = (2 << remainder) - 1
+          mask = (1 << remainder) - 1
           raise ArgumentError, 'invalid base32 (non-zero padding bits)' unless (bit_pool & mask).zero?
           #--
           bit_pool >>= remainder

@@ -25,7 +25,7 @@ module ZBase32
 
           remainder = pool_size % 8
           # check padding, maybe expand out
-          mask = (2 << remainder) - 1
+          mask = (1 << remainder) - 1
           bit_pool >>= remainder unless (bit_pool & mask).zero?
 
           num_bytes = pool_size / 8
@@ -69,7 +69,7 @@ module ZBase32
 
           remainder = pool_size % 8
           # check padding, maybe expand out
-          mask = (2 << remainder) - 1
+          mask = (1 << remainder) - 1
           bit_pool >>= remainder unless (bit_pool & mask).zero?
 
           num_bytes = pool_size / 8
