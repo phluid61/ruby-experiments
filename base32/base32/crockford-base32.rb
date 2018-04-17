@@ -10,6 +10,8 @@ module CrockfordBase32
     def decode32 str
       # ignore padding, invalid chars
       out = +''.b
+      return out if str.empty?
+      return out if str == '*'
       str = str.b.upcase.gsub('-','').gsub('O','0').gsub(/[IL]/,'1')
       str = str.gsub(/[^0-9A-HJKMNP-TV-Z]+[*~$=U]?/, '')
 
@@ -69,6 +71,7 @@ module CrockfordBase32
     def strict_decode32 str
       out = +''.b
       return out if str.empty?
+      return out if str == '*'
       str = str.b.upcase.gsub('-','').gsub('O','0').gsub(/[IL]/,'1')
       str = str.gsub(/[^0-9A-HJKMNP-TV-Z]+[*~$=U]?/, '')
       raise ArgumentError, 'invalid crockford-base32' unless str =~ /\A[0-9A-HJKMNP-TV-Z]+[*~$=U]?\z/
