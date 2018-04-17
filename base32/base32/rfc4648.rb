@@ -7,6 +7,7 @@ module Base32
     def decode32 str
       # ignore padding, invalid chars
       out = +''.b
+      return out if str.empty?
       str = str.gsub(/[^A-Z2-7]+/, '').b
       str.scan(/.{1,8}/).each do |chunk|
         if chunk.length == 8
