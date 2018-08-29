@@ -1,5 +1,5 @@
 
-require "#{File.dirname(__FILE__)}/gettime.#{RbConfig::CONFIG['DLEXT']}"
+require "#{File.dirname(__FILE__)}/../ext/gettime/gettime.#{RbConfig::CONFIG['DLEXT']}"
 
 =begin
 begin

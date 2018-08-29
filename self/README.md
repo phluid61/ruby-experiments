@@ -1,1 +1,0 @@
-Defines the method `self` on all objects.For example:```rubyobj.self # => obj2.self { |i| i * 3 } # => 6[1,2,3,2,3,4].group_by &:self # => {1=>[1], 2=>[2,2], 3=>[3,3], 4=>[4]}```

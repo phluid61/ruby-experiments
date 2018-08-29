@@ -74,7 +74,7 @@ proc_clock_gettime(VALUE klass, VALUE clock_id)
     if (clock_gettime(clk_id, &tp) == -1) {
 	rb_sys_fail("clock_gettime");
     }
-    return timespec2num(tp);
+    return timespec2num(&tp);
 }
 
 /*
@@ -101,7 +101,7 @@ proc_clock_getres(VALUE klass, VALUE clock_id)
     if (clock_getres(clk_id, &res) == -1) {
 	rb_sys_fail("clock_getres");
     }
-    return timespec2num(res);
+    return timespec2num(&res);
 }
 
 /*
