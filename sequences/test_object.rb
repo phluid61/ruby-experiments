@@ -16,13 +16,13 @@ puts ''
 4.times{|i| p [i, ObjectSequence.from_a(['a',1,$obj]).subsequence(i)] }
 puts ''
 3.times{|j|
-	(4-j).times{|i| p [[j,i],ObjectSequence.from_a(['a',1,$obj]).subsequence(j,i)] }
-	puts ''
+  (4-j).times{|i| p [[j,i],ObjectSequence.from_a(['a',1,$obj]).subsequence(j,i)] }
+  puts ''
 }
 
 # push (right)
 p ObjectSequence.from_a(['a',1,$obj]).tap{|bits|
-	3.times{ bits.push('x') }
+  3.times{ bits.push('x') }
 }
 
 # pop
@@ -31,7 +31,7 @@ p [bs.pop, bs]
 
 # unshift (left)
 p ObjectSequence.from_a(['a',1,$obj]).tap{|bits|
-	3.times{ bits.unshift('x') }
+  3.times{ bits.unshift('x') }
 }
 
 # shift
@@ -40,21 +40,21 @@ p [bs.shift, bs]
 
 # rotate nil
 p ObjectSequence.from_a(['a',1,$obj]).tap{|bits|
-	bits.rotate 0
+  bits.rotate 0
 }
 
 # rotate left
 p ObjectSequence.from_a(['a',1,$obj]).tap{|bits|
-	bits.rotate 1
+  bits.rotate 1
 }
 p ObjectSequence.from_a(['a',1,$obj]).tap{|bits|
-	bits.rotate 2
+  bits.rotate 2
 }
 
 # rotate right
 p ObjectSequence.from_a(['a',1,$obj]).tap{|bits|
-	bits.rotate -1
+  bits.rotate -1
 }
 p ObjectSequence.from_a(['a',1,$obj]).tap{|bits|
-	bits.rotate -2
+  bits.rotate -2
 }

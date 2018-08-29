@@ -1,9 +1,9 @@
 # vim:ts=2:sw=2:sts=2
 
 if Kernel.method_defined? :require_relative
-		require_relative 'hexdump.rb'
+    require_relative 'hexdump.rb'
 else
-		require './hexdump.rb'
+    require './hexdump.rb'
 end
 
 str = "lkjasdlkjasd\nalsdhlkjhaskdjh\n\nlkjhasdkjhaksjhdas\e[1mANSI MAGIC\e[0mklhkjhlysdufkhjknasdfkhjl7yk\nuhdfiuhdsf\t\tlkjhdsf"

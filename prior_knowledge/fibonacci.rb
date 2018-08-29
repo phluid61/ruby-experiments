@@ -1,24 +1,24 @@
 
 def fib(n)
-	return nil if n < 0
-	return n if n < 2
-	(n-2).times.inject([1,1]){|x,i|a,b=x;[b,a+b]}[1]
+  return nil if n < 0
+  return n if n < 2
+  (n-2).times.inject([1,1]){|x,i|a,b=x;[b,a+b]}[1]
 end
 
 FIB=Hash.new{|h,i|i<0?nil:h[i]=h[i-2]+h[i-1]}.update(0=>0,1=>1)
 
 Fib = Object.new.tap{|o| o.instance_eval{
-	@a = [0,1,1,2,3,5,8,13,21,34]
-	def [] n
-		return nil if n < 0
-		if n > (m=@a.length)
-			@a[n] = nil
-			(m..n).each do |i|
-				@a[i] = @a[i-1] + @a[i-2]
-			end
-		end
-		@a[n]
-	end
+  @a = [0,1,1,2,3,5,8,13,21,34]
+  def [] n
+    return nil if n < 0
+    if n > (m=@a.length)
+      @a[n] = nil
+      (m..n).each do |i|
+        @a[i] = @a[i-1] + @a[i-2]
+      end
+    end
+    @a[n]
+  end
 }}
 
 require 'timestamp'

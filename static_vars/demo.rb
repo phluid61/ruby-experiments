@@ -16,7 +16,7 @@ print "  A.static_vars => "; p A.static_vars
 puts "\n2. create a class with 'some_var' equal to 7:"
 
 class B
-	B.static_variable_set :some_var, 7
+  B.static_variable_set :some_var, 7
 end
 
 print "  B.static_variable_get(:some_var) => "; p B.static_variable_get(:some_var)

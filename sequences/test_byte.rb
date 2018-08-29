@@ -22,13 +22,13 @@ puts ''
 5.times{|i| p [i, ByteSequence.from_s("abcd").subsequence(i)] }
 puts ''
 4.times{|j|
-	(5-j).times{|i| p [[j,i],ByteSequence.from_s("abcd").subsequence(j,i)] }
-	puts ''
+  (5-j).times{|i| p [[j,i],ByteSequence.from_s("abcd").subsequence(j,i)] }
+  puts ''
 }
 
 # push (right)
 p ByteSequence.from_s("abc").tap{|bytes|
-	3.times{ bytes.push('x') }
+  3.times{ bytes.push('x') }
 }
 
 # pop
@@ -37,7 +37,7 @@ p [bs.pop, bs]
 
 # unshift (left)
 p ByteSequence.from_s("abc").tap{|bytes|
-	3.times{ bytes.unshift('x') }
+  3.times{ bytes.unshift('x') }
 }
 
 # shift
@@ -46,32 +46,32 @@ p [bs.shift, bs]
 
 # rotate nil
 p ByteSequence.from_s("abcd").tap{|bytes|
-	bytes.rotate 0
+  bytes.rotate 0
 }
 
 # rotate left
 p ByteSequence.from_s("abcd").tap{|bytes|
-	bytes.rotate 1
+  bytes.rotate 1
 }
 p ByteSequence.from_s("abcd").tap{|bytes|
-	bytes.rotate 2
+  bytes.rotate 2
 }
 
 # rotate right
 p ByteSequence.from_s("abcd").tap{|bytes|
-	bytes.rotate -1
+  bytes.rotate -1
 }
 p ByteSequence.from_s("abcd").tap{|bytes|
-	bytes.rotate -2
+  bytes.rotate -2
 }
 
 p ByteSequence.from_s("abcd").tap{|bytes|
-	bytes[1] = 'x'
+  bytes[1] = 'x'
 }
 p ByteSequence.from_s("abcd").tap{|bytes|
-	bytes[4] = 'x'
+  bytes[4] = 'x'
 }
 p ByteSequence.from_s("abcd").tap{|bytes|
-	bytes[5] = 'x'
+  bytes[5] = 'x'
 }
 

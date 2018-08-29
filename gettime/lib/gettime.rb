@@ -3,13 +3,13 @@ require "#{File.dirname(__FILE__)}/../ext/gettime/gettime.#{RbConfig::CONFIG['DL
 
 =begin
 begin
-	require 'gettime/gettime'
+  require 'gettime/gettime'
 rescue LoadError
-	begin
-		require "gettime/gettime.#{RbConfig::CONFIG['DLEXT']}"
-	rescue LoadError
-		require "gettime.#{RbConfig::CONFIG['DLEXT']}"
-	end
+  begin
+    require "gettime/gettime.#{RbConfig::CONFIG['DLEXT']}"
+  rescue LoadError
+    require "gettime.#{RbConfig::CONFIG['DLEXT']}"
+  end
 end
 =end
 

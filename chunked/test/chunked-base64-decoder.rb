@@ -5,17 +5,17 @@ dec  = ''
 pump = Chunked::Base64Decoder.new {|str| puts "> " + str.inspect; dec << str }
 
 strings = [
-	'S',
-	'GV',
-	'sbG',
-	'8gd2',
-	'9ybGQ',
-	'hCg',
+  'S',
+  'GV',
+  'sbG',
+  '8gd2',
+  '9ybGQ',
+  'hCg',
 ]
 
 strings.each do |s|
-	puts "Push #{s.inspect}"
-	pump << s
+  puts "Push #{s.inspect}"
+  pump << s
 end
 puts "Finalize"
 pump.finalize
