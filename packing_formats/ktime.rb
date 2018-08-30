@@ -28,7 +28,7 @@ class KTime
     #
 
     usec = (@t.hour * 3600 + @t.min * 60 + @t.sec) * 1_000_000 + @t.usec
-     sec = usec.to_f / 1_000_000.0
+     sec = Rational(usec.to_f, 1_000_000)
 
     tics = sec / SECONDS_PER_TIC
 
