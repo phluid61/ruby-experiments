@@ -1,19 +1,24 @@
 class KTime
-  SECONDS_PER_TIC = 1.318359375
+  SECONDS_PER_TIC = Rational(1318359375, 1000000000)
   #TICS_PER_SECOND = 0.758518518518518#...
 
-  EPOCH_DAY_OF_GREGORIAN_YEAR = 297 # plus one on leap years
+  EPOCH_DAY_OF_GREGORIAN_YEAR = 297
+  EPOCH_DAY_OF_GREGORIAN_LEAP_YEAR = 298
   GREGORIAN_DAYS_AFTER_EPOCH  = 68
 
-  MONTH_NAMES = %w{ Runcible Antepod Macropod Phennel Mujuss Rastor Gimbol Fredegar Whipple Spink Jambo Wombley Flank Runcible }
-  MONTH_NAMES_ABBR = %w{ Run Ant Mac Phe Muk Ras Gim Fre Whi Spi Jam Wom Fla Run }
+  MONTH_NAMES = %w{ ProphetsDay Antepod Macropod Phennel Mujuss Rastor Gimbol Fredegar Whipple Spink Jambo Wombley Flank Runcible }
+  MONTH_NAMES_ABBR = %w{ XXX Ant Mac Phe Muk Ras Gim Fre Whi Spi Jam Wom Fla Run }
 
   def KTime.now
     KTime.new
   end
 
-  def initialize
-    @t = Time.now
+  def KTime.at time
+    KTime.new time
+  end
+
+  def initialize t=nil
+    @t = t ? Time.at(t) : Time.now
 
     #
     # Time of Day
@@ -46,61 +51,99 @@ class KTime
 
     yday = @t.yday
 
-    x = y - 1
-    leap_xear = (x % 4 == 0) and ((x % 100 > 0) or (x % 400 == 0))
     leap_year = (y % 4 == 0) and ((y % 100 > 0) or (y % 400 == 0))
 
-    # Let's go against the Christian "no year 0" thing,
-    # just to irritate people.
-    if (m < 10) or (m == 10 and d < 24)
-      # last year
-#      @year = if y > 1980; y - 1980
-#        else y - 1981
-#        end
-      @year = y - 1980
-
-      # days since last dot?
-      doy = yday + GREGORIAN_DAYS_AFTER_EPOCH
-
-      @month = (doy / 28) + 1
-      @day   = (doy % 28) + 1
-    elsif m == 10 and d == 24
-      # w00t
-      @year  = y - 1980
-      @month = 0
-      @day   = 1
-    elsif leap_year and m == 10 and d == 25
-      # w00t
-      @year  = y - 1980
-      @month = 0
-      @day   = 2
+    if leap_year
+      if (m < 10) || (m == 10 && d < 23)
+        # it is before DOT, so last year
+        # 1980 => -1
+        # 1981 => 0
+        @year = y - 1981
+        @doy = yday + GREGORIAN_DAYS_AFTER_EPOCH
+        @month = (@doy - 1) / 28 + 1
+        @day = (@doy - 1) % 28 + 1
+      elsif m == 10 && (d == 23 || d == 24)
+        # the blessed day
+        # 1980 => 0
+        # 1981 => 1
+        @year = y - 1980
+        @doy = 0
+        @month = 0
+        @day = d - 23
+      else
+        # it is after DOT, so this year
+        # 1980 => 0
+        # 1981 => 1
+        @year = y - 1980
+        @doy = yday - EPOCH_DAY_OF_GREGORIAN_LEAP_YEAR
+        @month = (@doy - 1) / 28 + 1
+        @day = (@doy - 1) % 28 + 1
+      end
     else
-      # next year
-      @year = if y >= 1980; y - 1979
-        else y - 1989
-        end
-
-      # days since dot?
-      dot = EPOCH_DAY_OF_GREGORIAN_YEAR + (leap_year ? 1 : 0)
-      doy = yday - dot
-
-      @month = (doy / 28) + 1
-      @day   = (doy % 28) + 1
+      if (m < 10) || (m == 10 && d < 24)
+        # it is before DOT, so last year
+        # 1980 => -1
+        # 1981 => 0
+        @year = y - 1981
+        @doy = yday + GREGORIAN_DAYS_AFTER_EPOCH
+        @month = (@doy - 1) / 28 + 1
+        @day = (@doy - 1) % 28 + 1
+      elsif m == 10 && d == 24
+        # the blessed day
+        # 1980 => 0
+        # 1981 => 1
+        @year = y - 1980
+        @doy = 0
+        @month = 0
+        @day = 1
+      else
+        # it is after DOT, so this year
+        # 1980 => 0
+        # 1981 => 1
+        @year = y - 1980
+        @doy = yday - EPOCH_DAY_OF_GREGORIAN_YEAR
+        @month = (@doy - 1) / 28 + 1
+        @day = (@doy - 1) % 28 + 1
+      end
     end
-
   end
 
   def to_s
     '%3s %3s %2d %X%X%X%X %+05d %04d' % ['???', MONTH_NAMES_ABBR[@month], @day, @match, @egg, @ad, @tic, 0, @year]
   end
+
+  attr_reader :doy
 end
 
 if $0 == __FILE__
-  k = KTime.now
-  p k
-  p k.to_s
+#  k = KTime.now
+#  p k
+#  p k.to_s
+#
+#  t = Time.now
+#  p t.to_s
+#
+#  puts '---'
 
-  t = Time.now
-  p t.to_s
+  prev = nil
+  time = Time.mktime(1979,10,23,1,2,3,45)
+#  20.times do
+  (365+366+3).times do
+    k = KTime.at time
+    if prev.nil? || (prev+1) == k.doy
+      puts "#{k.to_s.inspect}  #{k.inspect}"
+    else
+      puts "\e[31m#{k.to_s.inspect}  #{k.inspect}\e[0m"
+    end
+    prev = k.doy
+    time = time + 86400
+  end
+
+#  puts '---'
+#  (1..12).each do |m|
+#    time = Time.mktime(1981,m,20,1,2,3,45)
+#    k = KTime.at time
+#    puts k
+#  end
 end
 
