@@ -95,7 +95,10 @@ class KTime
   attr_reader :match_of_day, :egg_of_day, :ad_of_day, :tic_of_day
 end
 
-if $0 == __FILE__
+require 'mug/main'
+
+if __main__
+
   k = KTime.now
   p k
   p k.to_s
