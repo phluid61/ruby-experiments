@@ -96,34 +96,27 @@ class KTime
 end
 
 if $0 == __FILE__
-#  k = KTime.now
-#  p k
-#  p k.to_s
-#
-#  t = Time.now
-#  p t.to_s
-#
-#  puts '---'
+  k = KTime.now
+  p k
+  p k.to_s
 
-  prev = nil
-  time = Time.mktime(1979,10,23,1,2,3,45)
-#  20.times do
-  (365+366+3).times do
-    k = KTime.at time
-    if prev.nil? || (prev+1) == k.doy
-      puts "#{k.to_s.inspect}  #{k.inspect}"
-    else
-      puts "\e[31m#{k.to_s.inspect}  #{k.inspect}\e[0m"
-    end
-    prev = k.doy
-    time = time + 86400
-  end
+  t = Time.now
+  p t.to_s
 
 #  puts '---'
-#  (1..12).each do |m|
-#    time = Time.mktime(1981,m,20,1,2,3,45)
+
+#  prev = nil
+#  time = Time.mktime(1979,10,23,1,2,3,45)
+#  (365+366+3).times do
 #    k = KTime.at time
-#    puts k
+#    if prev.nil? || (prev+1) == k.doy
+#      puts "#{k.to_s.inspect}  #{k.inspect}"
+#    else
+#      puts "\e[31m#{k.to_s.inspect}  #{k.inspect}\e[0m"
+#    end
+#    prev = k.doy
+#    time = time + 86400
 #  end
+
 end
 
