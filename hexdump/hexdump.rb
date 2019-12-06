@@ -18,7 +18,7 @@ class String
       g = false
       i = 0
       str=[]
-      scan(/.{1,4}/m).each do |c|
+      b.scan(/.{1,4}/m).each do |c|
         if (g = !g)
           as = "\e[100m"
           ae = "\e[0m"
@@ -33,7 +33,7 @@ class String
       end
       ary << str.join(' ') if str.length > 0
     else
-      scan(/.{1,32}/m).each{|c|ary << c.unpack("C*").map{|c|'%02x'%c}.join(' ')}
+      b.scan(/.{1,32}/m).each{|c|ary << c.unpack("C*").map{|c|'%02x'%c}.join(' ')}
     end
     ary
   end
@@ -55,7 +55,7 @@ class String
       g = false
       i = 0
       str=''
-      scan(/.{1,4}/m).each do |c|
+      b.scan(/.{1,4}/m).each do |c|
         if (g = !g)
           as = "\e[100m"
           ae = "\e[0m"
@@ -71,7 +71,7 @@ class String
       ary << str if str.length > 0
       ary.map{|s|"%-#{32 + s.scan(/\e\[(?:[0-9]+(?:;[0-9]+)*)m/).join.length}s"%s}
     else
-      scan(/.{1,32}/m).each{|c|ary << ("%-32s" % c.printable)}
+      b.scan(/.{1,32}/m).each{|c|ary << ("%-32s" % c.printable)}
       ary
     end
   end
@@ -80,7 +80,7 @@ class String
   # Returns a copy of this String object, with all non-printable ASCII characters
   # replaced with +rep+ (default: ".")
   #
-  def printable(rep=".") tr( ([*(0..31)] + [*(126..255)]).pack("C*"), rep[0..0] )  end
+  def printable(rep=".") b.tr( ([*(0..31)] + [*(126..255)]).pack("C*"), rep[0..0] )  end
 
   #
   # Returns an Array of Strings, which are a combination of #wrap_hex and #wrap_printable.
